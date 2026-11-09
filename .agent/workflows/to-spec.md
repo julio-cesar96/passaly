@@ -1,0 +1,1 @@
+../../.claude/skills/to-spec/SKILL.md
