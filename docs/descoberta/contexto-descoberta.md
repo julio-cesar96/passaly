@@ -67,7 +67,22 @@ Legenda: **[D]** decidido · **[H]** hipótese, sem dado real · **[?]** em aber
 - **Disputa:** confirmação da troca pelos dois lados; botão "não compareceu"; possivelmente sem mediação humana, dado o valor baixo.
 - **Pontos de encontro:** combinação livre ou lista curada de locais públicos/parceiros.
 
+## Resolvido no grill (2026-11-09)
+
+- **[D]** Fase 1 do protótipo: **Ilha do Governador**; o Rio inteiro continua sendo o destino.
+- **[D]** **Doação é o motor** do protótipo; troca é opção do Post, sem casamento automático. Os dados dos grupos do Facebook da Ilha (tamanhos, troca x doação) ainda confirmam ou refutam isso [H].
+- **[D]** **Sem chat de texto livre** no protótipo: "quero" → aceita/recusa → ponto e horário em opções fixas (ADR 0001).
+- **[D]** Pontos de encontro: lista curada e manual, 3 a 5 locais públicos, sem parceria formal.
+- **[D]** Denúncia graduada: oculta o Post na hora; o fundador revisa e confirma qualquer banimento. Motivos fixos: pacote aberto ou vencido, suspeita de revenda, não compareceu. Prazo de revisão **pendente** (sugestão: 24 h).
+- **[D]** Verificação: só telefone; documento não entra (volta como selo opcional se houver fraude real, com `/research` antes).
+- **[D]** IA como alerta, não como porteira; o Post publica na hora (ADR 0002).
+- **[D]** Proximidade por bairro marcado, sem GPS; remover EXIF das fotos no upload.
+- **[D]** Menor protótipo: cadastro por telefone, Post de fralda, busca por tamanho e bairro, Pedido, ponto/horário fixos, confirmação pelos dois lados (contador de trocas concluídas como reputação), denúncia. Fora: chat livre, IA porteira, documento, GPS, código de barras, parcerias, métricas ao usuário, receita.
+- **[D]** Critério de sucesso: em 4 semanas, ao menos 10 entregas confirmadas pelos dois lados entre ~30 usuários da Ilha (números ajustáveis). Semear as primeiras famílias é trabalho do fundador, fora do código.
+
 ## Perguntas em aberto para o grill
+
+> As perguntas 1, 2, 4, 5, 6, 7, 8 e 9 foram resolvidas acima. A 3 foi resolvida em parte (ADR 0002). Seguem abertas: prazo de revisão das denúncias, a pergunta 10 e a pesquisa pendente.
 
 1. Recorte de lançamento: a cidade inteira ou uma zona/bairro/comunidade?
 2. A troca direta encontra par, ou a doação é o motor? Como validar isso antes de construir?
