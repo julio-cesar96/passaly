@@ -80,9 +80,38 @@ Legenda: **[D]** decidido · **[H]** hipótese, sem dado real · **[?]** em aber
 - **[D]** Menor protótipo: cadastro por telefone, Post de fralda, busca por tamanho e bairro, Pedido, ponto/horário fixos, confirmação pelos dois lados (contador de trocas concluídas como reputação), denúncia. Fora: chat livre, IA porteira, documento, GPS, código de barras, parcerias, métricas ao usuário, receita.
 - **[D]** Critério de sucesso: em 4 semanas, ao menos 10 entregas confirmadas pelos dois lados entre ~30 usuários da Ilha (números ajustáveis). Semear as primeiras famílias é trabalho do fundador, fora do código.
 
+## Resolvido pela pesquisa de LGPD (2026-11-11)
+
+Fonte: [pesquisa-lgpd.md](pesquisa-lgpd.md). **Não é parecer jurídico**; as perguntas para advogado estão na seção 13 de lá. Abaixo, o que a pesquisa responde (fato, com a seção) e o que ela pede que o fundador decida (**[?]**).
+
+### O que a pesquisa responde
+
+- **A LGPD se aplica desde o primeiro usuário**, mesmo sem receita: o fundador é o controlador, pessoa natural, e agente de pequeno porte (seções 1 e 4).
+- **Encarregado (DPO): não é obrigatório** no regime de pequeno porte. Em troca, é obrigatório manter um canal de contato com o titular. Os prazos de atendimento e de comunicação de incidente contam em dobro. O benefício cai se o tratamento virar de alto risco; IA de visão de terceiro pode causar isso (seção 4).
+- **Bases legais:** execução de contrato (os termos de uso) para telefone, Post, foto, bairro, Pedido, confirmações e contador. Legítimo interesse, com teste de balanceamento escrito, para Denúncia, banimento e logs. Consentimento não é recomendado, porque pode ser revogado a qualquer momento (seção 2).
+- **Documento e biometria:** o STJ considera o IP suficiente para identificar o usuário, então CPF, documento e selfie não se justificam (seção 3). Isso reforça a decisão "documento não entra". Foto de pacote não é dado biométrico; reconhecimento facial deve ser evitado (seção 6).
+- **"Identificável" (ADR 0004):** telefone verificado + registros de IP, porta lógica e data/hora do cadastro e das ações relevantes (seção 3).
+- **Mensagens de chat:** saíram do escopo com o ADR 0001; não há o que reter.
+- **Retenção:** a LGPD não fixa prazos; manda eliminar ao fim da finalidade. A pesquisa propõe prazos por dado, a validar com advogado (seção 5.3).
+- **EXIF:** nenhuma norma exige removê-lo expressamente, mas a remoção decorre dos arts. 6º e 46 (seção 6). A decisão do grill continua valendo.
+- **Criança na foto:** é dado de criança (art. 14). O coerente é **não publicar e eliminar** (pedir nova foto), não desfocar. Detectar criança com IA de terceiro já é tratar e compartilhar imagem de criança (seção 6).
+- **IA de terceiro:** o fornecedor vira operador; antes de usar, checar se ele treina modelos com as fotos, onde processa, por quanto tempo retém e se assina as cláusulas-padrão da ANPD (seção 7). O ADR 0002 evita a decisão "unicamente automatizada" do art. 20.
+- **Aplicação hospedada nos EUA é transferência internacional**, mesmo com o banco em São Paulo. Os EUA não têm adequação; os caminhos são frágeis para uma pessoa física (seção 8).
+- **Decreto 12.975/2026:** pede que a remoção de conteúdo seja comunicada ao autor com o fundamento e o meio de contestar. Se isso alcança um provedor pessoa física pequeno **não está confirmado** (seções 9.2 e 13).
+
+### Para o fundador decidir
+
+- **[?]** Guardar logs de IP, porta e data/hora por **6 meses**, de forma voluntária (espelhando o Marco Civil, art. 15).
+- **[?]** Hospedar a aplicação na **região de São Paulo** e mapear os serviços estrangeiros acessórios (SMS, e-mail, logs, IA) antes de escolher a stack.
+- **[?]** Trocar "o app deve detectar criança na foto" (seção LGPD acima) por: instrução na tela de upload ("fotografe só o pacote"), proibição nos termos, e remoção na revisão manual. Falta definir **como a foto com criança chega ao fundador**: os motivos fixos de Denúncia não cobrem esse caso.
+- **[?]** Adotar a tabela de prazos de retenção da seção 5.3 (ou ajustar), inclusive o hash do telefone do banido depois de pedido de exclusão (maior incerteza da pesquisa).
+- **[?]** Incluir no fluxo de Denúncia um **aviso ao Anunciante com o motivo e um meio de contestar**, mesmo antes de confirmar se o Decreto 12.975/2026 se aplica.
+- **[?]** Uso só por **maiores de 18 anos**, nos termos.
+- **[?]** Continuar como pessoa física ou abrir PJ (pergunta para advogado e contador; muda quem é o controlador e pode atrair o Marco Civil, art. 15).
+
 ## Perguntas em aberto para o grill
 
-> As perguntas 1, 2, 4, 5, 6, 7, 8 e 9 foram resolvidas acima. A 3 foi resolvida em parte (ADR 0002). Seguem abertas: a pergunta 10 e a pesquisa pendente. Desenho do protótipo aprovado pelo fundador em 2026-11-09.
+> As perguntas 1, 2, 4, 5, 6, 7, 8 e 9 foram resolvidas acima. A 3 foi resolvida em parte (ADR 0002). Seguem abertas: a pergunta 10, os itens **[?]** da pesquisa de LGPD e o recall de fraldas. Desenho do protótipo aprovado pelo fundador em 2026-11-09.
 
 1. Recorte de lançamento: a cidade inteira ou uma zona/bairro/comunidade?
 2. A troca direta encontra par, ou a doação é o motor? Como validar isso antes de construir?
@@ -97,8 +126,8 @@ Legenda: **[D]** decidido · **[H]** hipótese, sem dado real · **[?]** em aber
 
 ## Pesquisa pendente (`/research`, com fonte e URL)
 
-- Fralda descartável tem validade impressa? Em que formato? O que o código de barras (EAN) do pacote identifica?
-- LGPD: tratamento de documento e biometria; base legal adequada para cada dado; necessidade de encarregado (DPO) para um app pequeno; retenção e exclusão de mensagens de chat.
-- LGPD: remoção de metadados de foto e uso de serviço de IA de terceiro para analisar imagens.
-- CDC: responsabilidade de uma plataforma intermediária em troca e doação entre pessoas físicas.
+- ~~Fralda descartável tem validade impressa? Em que formato? O que o código de barras (EAN) do pacote identifica?~~ Ver [pesquisa-fralda-validade-ean.md](pesquisa-fralda-validade-ean.md).
+- ~~LGPD: tratamento de documento e biometria; base legal adequada para cada dado; necessidade de encarregado (DPO) para um app pequeno; retenção e exclusão de mensagens de chat.~~ Ver [pesquisa-lgpd.md](pesquisa-lgpd.md) (documento e chat saíram do escopo no grill/ADR 0001; biometria só tocada na seção 6).
+- ~~LGPD: remoção de metadados de foto e uso de serviço de IA de terceiro para analisar imagens.~~ Ver [pesquisa-lgpd.md](pesquisa-lgpd.md).
+- ~~CDC: responsabilidade de uma plataforma intermediária em troca e doação entre pessoas físicas.~~ Ver [pesquisa-cdc-doacao-troca-pf.md](pesquisa-cdc-doacao-troca-pf.md).
 - Recall de fraldas no Brasil (baixa prioridade).
