@@ -38,9 +38,9 @@ Legenda: **[D]** decidido · **[H]** hipótese, sem dado real · **[?]** em aber
 - **[?]** Parcerias (pontos de coleta, creches, ONGs, lojas) interessam, mas o formato está em aberto.
 
 ### LGPD
-- **[D]** Dados **só do usuário anunciante**. **Nenhum dado de criança** é armazenado, só o item.
+- **[D]** Dados do **Anunciante e do Interessado** (corrigido no grill de 2026-11-12: quem faz o Pedido também tem telefone, Pedidos, logs e contador). **Nenhum dado de criança** é armazenado, só o item.
 - **[D]** Localização pelo **bairro** marcado no post. Filtros por proximidade e reputação são desejados.
-- **[D]** Foto só do item. Se aparecer criança por acidente, o app deve detectar e tratar.
+- **[D]** Foto só do item. ~~Se aparecer criança por acidente, o app deve detectar e tratar.~~ Substituído no grill de 2026-11-12 por regra + revisão de todas as fotos (ver abaixo).
 - **[D]** Seguir as recomendações gerais da LGPD (base legal, retenção, exclusão), a detalhar após pesquisa.
 
 ## Tensões identificadas
@@ -101,6 +101,8 @@ Fonte: [pesquisa-lgpd.md](pesquisa-lgpd.md). **Não é parecer jurídico**; as p
 
 ### Para o fundador decidir
 
+> Todos resolvidos no grill de 2026-11-12 (seção seguinte). Mantidos aqui como registro.
+
 - **[?]** Guardar logs de IP, porta e data/hora por **6 meses**, de forma voluntária (espelhando o Marco Civil, art. 15).
 - **[?]** Hospedar a aplicação na **região de São Paulo** e mapear os serviços estrangeiros acessórios (SMS, e-mail, logs, IA) antes de escolher a stack.
 - **[?]** Trocar "o app deve detectar criança na foto" (seção LGPD acima) por: instrução na tela de upload ("fotografe só o pacote"), proibição nos termos, e remoção na revisão manual. Falta definir **como a foto com criança chega ao fundador**: os motivos fixos de Denúncia não cobrem esse caso.
@@ -109,9 +111,67 @@ Fonte: [pesquisa-lgpd.md](pesquisa-lgpd.md). **Não é parecer jurídico**; as p
 - **[?]** Uso só por **maiores de 18 anos**, nos termos.
 - **[?]** Continuar como pessoa física ou abrir PJ (pergunta para advogado e contador; muda quem é o controlador e pode atrair o Marco Civil, art. 15).
 
+## Resolvido no grill de LGPD e estados (2026-11-12)
+
+Fecha os **[?]** da pesquisa de LGPD e as tensões do protótipo de estados ([README](../../prototypes/estados-post-pedido/README.md), D1 a D15, que continuam valendo). Números entre parênteses: pergunta da [seção 13 da pesquisa](pesquisa-lgpd.md) que ainda precisa de advogado.
+
+### Identificação e logs
+- **[D]** Guardar **IP, porta lógica e data/hora** do cadastro, dos logins e de: criar Post, aceitar Pedido, confirmar Entrega e Denúncia. **Dos dois lados** (Anunciante e Interessado). **6 meses rolantes**, depois eliminar, salvo pedido de guarda cautelar (MCI art. 15, §§1º–2º). Voluntário (o MCI art. 15 não obriga pessoa física sem fins econômicos); base: legítimo interesse com teste de balanceamento escrito. (13.2, 13.3)
+
+### Hospedagem e serviços (ADR 0005)
+- **[D]** Aplicação e banco na **região de São Paulo**: restrição para a escolha da stack.
+- **[D]** **SMS só para verificar o telefone** (cadastro e login em aparelho novo, sessão longa). É o único custo variável aceito e o único serviço que pode ser estrangeiro, e só com as cláusulas-padrão da ANPD (senão, fornecedor brasileiro). O SMS não é trocado por e-mail porque o telefone verificado sustenta a identificação (ADR 0004) e o Banimento.
+- **[D]** **Avisos do sistema só dentro do app**, sem SMS nem e-mail. Consequência: o aviso do D4 depende de a pessoa abrir o app.
+- **[D]** Fora do protótipo: e-mail, analytics e monitoramento de terceiro, IA. CDN só se servir do Brasil.
+- **[D]** Antes da stack: `/research` comparando fornecedores de SMS por preço e por cláusulas-padrão da ANPD. (13.7: acesso remoto do exterior é transferência?)
+
+### Foto com pessoa
+- **[D]** Regra: o Post mostra **só o pacote de fralda, sem pessoas**, nos termos e de forma explícita na tela de upload.
+- **[D]** O fundador **revisa 100% das fotos novas** no protótipo (não só amostra).
+- **[D]** Se houver pessoa na foto: **eliminar a foto** (sem desfoque) e manter o Post oculto até o Anunciante enviar foto nova. Não conta como infração.
+- **[D]** Sem motivo novo de Denúncia. **Gatilho:** quando a revisão integral deixar de ser viável, entra o motivo "foto mostra pessoa". (13.6)
+
+### Retenção (prazos a validar com advogado: 13.4, 13.5)
+
+| Dado | Prazo |
+|---|---|
+| Conta (telefone, apelido, bairro) | Enquanto existir; eliminada na exclusão (exceção: hash do banido) |
+| Denúncia depois da Entrega | Pode ser feita até **30 dias** após a conclusão do Pedido; depois, as Entregas concluídas daquele Pedido são definitivas (limita o D12) |
+| Foto de Post encerrado | Eliminada **30 dias** após o encerramento, ou após a decisão se houver Denúncia aberta |
+| Campos do Post | Anonimizados no encerramento, mantidos para métricas internas (art. 16, IV) |
+| Pedido e confirmações | **90 dias** ligados às duas contas após conclusão ou cancelamento; depois anonimizados |
+| Entregas concluídas | O número fica na conta enquanto ela existir |
+| Exclusão de conta | Pedidos em que a pessoa foi a outra parte são anonimizados; o contador do outro lado fica |
+| Denúncia improcedente | Eliminada **30 dias** após a decisão |
+| Denúncia procedente sem Banimento | **1 ano**, ligada à conta, para medir reincidência |
+| Denúncia procedente com Banimento | Enquanto durar o Banimento |
+| Banimento | **Prazo indeterminado**, reversível a pedido |
+| Banido que pede exclusão | Só **hash do telefone (com chave secreta) + motivo + data, por 1 ano** (ADR 0006) |
+| Logs de IP, porta e data/hora | 6 meses rolantes |
+| Registro de incidentes de segurança | 5 anos (Res. 15/2024, art. 10: obrigação) |
+
+Prazos maiores para defesa (3 anos CC, 5 anos CDC) **não** adotados; ficam para o advogado.
+
+### Devido processo na Denúncia (sem chat, ADR 0001)
+- **[D]** A **pessoa denunciada** (Anunciante ou Interessado, pelo D1) recebe aviso no app com o motivo fixo, o efeito (Post oculto, Pedido congelado) e o prazo de 24 h. **Não identifica quem denunciou.**
+- **[D]** **Contestação** por botão, com respostas fixas por motivo ("o pacote estava fechado e na validade", "eu compareci", "não é revenda"). Não muda estado; marca a Denúncia como contestada para a revisão. Sem texto livre.
+- **[D]** A **decisão** (procedente ou improcedente) também é avisada, com o efeito. No Banimento, o aviso diz como pedir revisão.
+- **[D]** O resto, inclusive pedido de revisão de Banimento, vai pelo **canal do titular** (contato do fundador publicado na política; não é serviço de e-mail do app).
+- Adotado mesmo sem confirmar se o Decreto 12.975/2026 alcança o Passaly. (13.8, 13.10)
+
+### Quem usa e quem responde
+- **[D]** Só **maiores de 18 anos** e só **pessoas físicas, para uso pessoal**, por **autodeclaração** no cadastro ("sou pessoa física, tenho 18 anos ou mais e uso para fins pessoais"). Sem data de nascimento nem documento. (13.9: ECA Digital)
+- **[D]** Conta de menor descoberta: excluída, sem Banimento e sem hash.
+- **[D]** Conta de empresa, loja, brechó, ONG ou creche: tratada como Revenda (Banimento confirmado pelo fundador), pela Denúncia "suspeita de revenda". Parcerias continuam fora do protótipo.
+- **[D]** O fundador segue como **controlador pessoa física** no protótipo. **Gatilhos para reavaliar PJ:** começar a ter receita; sair da Ilha do Governador; recomendação do advogado; ou os deveres do Decreto 12.975/2026 exigirem PJ. (13.1, 13.8)
+- **[D]** Levar as perguntas 1 a 10 da seção 13 a um advogado **antes de abrir para usuários**.
+
+### Vocabulário
+- GLOSSARY.md: novos **Interessado, Entrega, Entregas concluídas, Contrapartida, Contestação, Banimento**; **Denúncia** reescrita (D1, D7, devido processo).
+
 ## Perguntas em aberto para o grill
 
-> As perguntas 1, 2, 4, 5, 6, 7, 8 e 9 foram resolvidas acima. A 3 foi resolvida em parte (ADR 0002). Seguem abertas: a pergunta 10, os itens **[?]** da pesquisa de LGPD e o recall de fraldas. Desenho do protótipo aprovado pelo fundador em 2026-11-09.
+> As perguntas 1, 2, 4, 5, 6, 7, 8 e 9 foram resolvidas acima. A 3 foi resolvida em parte (ADR 0002). Os itens **[?]** da pesquisa de LGPD foram resolvidos em 2026-11-12. Seguem abertos: a pergunta 10 e o recall de fraldas. Desenho do protótipo aprovado pelo fundador em 2026-11-09.
 
 1. Recorte de lançamento: a cidade inteira ou uma zona/bairro/comunidade?
 2. A troca direta encontra par, ou a doação é o motor? Como validar isso antes de construir?
