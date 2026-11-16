@@ -120,10 +120,24 @@ Fecha os **[?]** da pesquisa de LGPD e as tensões do protótipo de estados ([RE
 
 ### Hospedagem e serviços (ADR 0005)
 - **[D]** Aplicação e banco na **região de São Paulo**: restrição para a escolha da stack.
-- **[D]** **SMS só para verificar o telefone** (cadastro e login em aparelho novo, sessão longa). É o único custo variável aceito e o único serviço que pode ser estrangeiro, e só com as cláusulas-padrão da ANPD (senão, fornecedor brasileiro). O SMS não é trocado por e-mail porque o telefone verificado sustenta a identificação (ADR 0004) e o Banimento.
+- **[D]** **SMS só para verificar o telefone** (cadastro e login em aparelho novo, sessão longa). É o único custo variável aceito e o único serviço que pode ser estrangeiro, e só com mecanismo de transferência documentado (ADR 0007). O SMS não é trocado por e-mail porque o telefone verificado sustenta a identificação (ADR 0004) e o Banimento.
 - **[D]** **Avisos do sistema só dentro do app**, sem SMS nem e-mail. Consequência: o aviso do D4 depende de a pessoa abrir o app.
 - **[D]** Fora do protótipo: e-mail, analytics e monitoramento de terceiro, IA. CDN só se servir do Brasil.
-- **[D]** Antes da stack: `/research` comparando fornecedores de SMS por preço e por cláusulas-padrão da ANPD. (13.7: acesso remoto do exterior é transferência?)
+- **[D]** ~~Antes da stack: `/research` comparando fornecedores de SMS por preço e por cláusulas-padrão da ANPD.~~ Ver [pesquisa-sms-otp.md](pesquisa-sms-otp.md) e o grill abaixo. (13.7: acesso remoto do exterior é transferência?)
+
+## Resolvido no grill de SMS/OTP (2026-11-16)
+
+Sobre a [pesquisa de SMS/OTP](pesquisa-sms-otp.md). Regra do fornecedor, Parte Designada, retenção do operador e recusa do WhatsApp: [ADR 0007](../adr/0007-sms-so-com-mecanismo-de-transferencia-documentado.md).
+
+- **[D]** **Sem custo fixo mensal** para o SMS: só pagamento por uso ou recarga que não expira. Ficam fora Zenvia (pacote de R$ 100/mês) e AWS com short code.
+- **[D]** **SMS só com o código** ("Passaly: seu código é 123456"), sem apelido, bairro ou link (minimização, art. 6º, III).
+- **[D]** **Limites de envio**: 3 SMS por número por hora e 5 por dia; teto global de 30 por dia, acima do qual o envio para e o fundador é avisado no app; só celular +55. Protege o único custo variável contra bombeamento de SMS.
+- **[D]** **Sem canal reserva**: se o SMS falhar, a pessoa reenvia dentro do limite ou tenta depois. Nenhuma conta é liberada sem Telefone verificado; casos isolados vão pelo canal do titular.
+- **[D]** **WhatsApp fora do protótipo** (ADR 0007). Gatilho para reabrir: custo de SMS relevante.
+- **[D]** Fornecedores brasileiros só são consultados por escrito se Google e Twilio forem descartados na escolha da stack.
+- Lacunas que só importam na escolha da stack: plano gratuito do Firebase com login por telefone; custo do remetente da Twilio no Brasil.
+- Novas perguntas para advogado: 13.11 a 13.13 da [pesquisa de LGPD](pesquisa-lgpd.md).
+- GLOSSARY.md: novo **Telefone verificado**.
 
 ### Foto com pessoa
 - **[D]** Regra: o Post mostra **só o pacote de fralda, sem pessoas**, nos termos e de forma explícita na tela de upload.

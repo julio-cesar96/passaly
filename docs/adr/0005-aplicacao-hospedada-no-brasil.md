@@ -12,6 +12,6 @@ A aplicação roda na mesma região brasileira do banco, e isso é restrição p
 
 ## Consequences
 
-- Os serviços acessórios estrangeiros ficam no mínimo. No protótipo, só o SMS de verificação, e apenas de fornecedor que ofereça as cláusulas-padrão da ANPD (ou fornecedor brasileiro). E-mail, analytics e monitoramento de terceiro, e IA ficam fora.
+- Os serviços acessórios estrangeiros ficam no mínimo. No protótipo, só o SMS de verificação, e apenas de fornecedor com mecanismo de transferência documentado ([ADR 0007](0007-sms-so-com-mecanismo-de-transferencia-documentado.md); ser brasileiro não basta). E-mail, analytics e monitoramento de terceiro, e IA ficam fora.
 - Cada serviço estrangeiro que entrar depois exige checar as cláusulas-padrão e publicar a página do art. 17, §2º, da Res. 19/2024.
 - Não confirmado: se acesso remoto do suporte de um provedor americano a dados em São Paulo é transferência (pergunta 7 da seção 13 da pesquisa).

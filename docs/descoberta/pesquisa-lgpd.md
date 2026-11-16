@@ -299,6 +299,9 @@ Só o que decorre dos fatos acima. As decisões ficam para `/grill-with-docs` (e
 8. Os deveres do Decreto 12.975/2026 (canal de denúncia, comunicação da remoção com fundamento e contestação, termos com devido processo, relatório de transparência, representante PJ) se aplicam ao Passaly?
 9. O ECA Digital (Lei 15.211/2025) alcança um app de itens de bebê usado por adultos?
 10. A ocultação automática do Post após uma Denúncia é "decisão unicamente automatizada" (art. 20)? A revisão manual em 24 h basta?
+11. Incorporar as cláusulas-padrão **por referência**, com as opções preenchidas e sem a frase "sem alteração" (caso da Twilio), atende o art. 16 da Res. CD/ANPD 19/2024 ("adoção integral e sem alteração")? Ver [pesquisa-sms-otp.md](pesquisa-sms-otp.md), seção 3.1. (Acrescentada no grill de SMS/OTP, 2026-11-16.)
+12. Aceitar os termos online de um provedor conta como "instrumento contratual" para adotar as cláusulas-padrão?
+13. Usar a API de SMS de um provedor estrangeiro na região de São Paulo, com entrega por parceiro de operadora, é transferência internacional?
 
 ## 14. Fontes (acesso em 2026-11-11)
 

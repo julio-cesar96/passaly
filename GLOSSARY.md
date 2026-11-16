@@ -14,6 +14,10 @@ _Avoid_: Vendedor, doador (quando o Post for de troca)
 Usuário que faz um Pedido num Post. A mesma pessoa pode ser Anunciante num Post e Interessado em outro.
 _Avoid_: Comprador, receptor
 
+**Telefone verificado**:
+Telefone cuja posse o usuário confirmou digitando o código recebido por SMS, no cadastro e no login em aparelho novo.
+_Avoid_: Telefone confirmado, conta verificada
+
 ### Oferta e combinação
 
 **Post**:
