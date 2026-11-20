@@ -32,6 +32,9 @@ Estágio: **spec aprovada e stack definida**; ainda sem código de aplicação. 
 ## Git
 
 - Trabalhar em branch de feature. Nunca commitar na `main`.
+- Commits no padrão Conventional Commits: `tipo(escopo opcional): descrição` em português,
+  no imperativo e em minúsculas. Tipos: `feat`, `fix`, `test`, `refactor`, `docs`, `chore`,
+  `ci`, `build`. Rodapé cita o ticket (`Refs #5` ou `Closes #5`).
 - Sem `git push` sem pedido explícito.
 
 ## Estrutura do repositório

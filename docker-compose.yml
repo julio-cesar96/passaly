@@ -1,0 +1,15 @@
+# Postgres só para desenvolvimento e testes locais. Credenciais fictícias, nunca usadas fora do Mac.
+services:
+  postgres:
+    image: postgres:17
+    environment:
+      POSTGRES_USER: passaly
+      POSTGRES_PASSWORD: passaly
+      POSTGRES_DB: passaly
+    ports:
+      - "5432:5432"
+    volumes:
+      - passaly-pg:/var/lib/postgresql/data
+      - ./docker/criar-banco-de-testes.sql:/docker-entrypoint-initdb.d/criar-banco-de-testes.sql:ro
+volumes:
+  passaly-pg:
