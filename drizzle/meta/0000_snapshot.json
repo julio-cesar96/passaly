@@ -1,0 +1,38 @@
+{
+  "id": "a5b3aae7-3a0d-44f3-bf03-22769448feb7",
+  "prevId": "00000000-0000-0000-0000-000000000000",
+  "version": "7",
+  "dialect": "postgresql",
+  "tables": {
+    "public.execucoes_do_tique": {
+      "name": "execucoes_do_tique",
+      "schema": "",
+      "columns": {
+        "instante": {
+          "name": "instante",
+          "type": "timestamp with time zone",
+          "primaryKey": true,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    }
+  },
+  "enums": {},
+  "schemas": {},
+  "sequences": {},
+  "roles": {},
+  "policies": {},
+  "views": {},
+  "_meta": {
+    "columns": {},
+    "schemas": {},
+    "tables": {}
+  }
+}
