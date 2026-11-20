@@ -21,9 +21,9 @@ Estágio: **spec aprovada e stack definida**; ainda sem código de aplicação. 
 - **Stack definida** (ADRs 0008 a 0011; fatos em `docs/descoberta/pesquisa-stack.md`):
   - TypeScript num monólito: SPA Vite + React + TanStack Router/Query, servido por Hono em Node, sem SSR. Postgres com Drizzle. pnpm, Vitest, Biome, TS estrito (ADR 0008).
   - Tudo em São Paulo: Cloud Run + Cloud Scheduler, Neon (`aws-sa-east-1`, Free + `pg_dump` diário de 7 dias), fotos em bucket privado do GCS com link assinado de 5 min, segredos no Secret Manager preso à região, URL `*.run.app` (ADR 0009).
-  - SMS: Google Identity Platform, com os limites aplicados pelo caso de uso "autorizar envio de código" via `beforeSmsSent`; plano B Twilio Verify (ADR 0010).
+  - SMS: Twilio Verify chamada só pelo servidor, depois que o caso de uso "solicitar código" aplica os limites; volta ao Google se o advogado recusar as cláusulas por referência (ADR 0010).
   - Tarefas no tempo: tique idempotente de 15 min chamando o mesmo caso de uso do relógio dos testes (ADR 0011).
-- **Próximo passo:** protótipo descartável que valida o ADR 0010 (o `BLOCK` da `beforeSmsSent` sem SMS defense, a chamada ao endpoint, o `phone_number` no token); depois `/to-tickets` a partir da #2.
+- **Próximo passo:** `/to-tickets` a partir da #2. O ticket de cadastro começa com um teste curto de entrega real pela Twilio Verify (ADR 0010).
 - Código de aplicação só a partir dos tickets, pelo fluxo `/implement` com `/tdd`. Testes só pela interface de casos de uso, com relógio controlável e SMS falso.
 - Nenhum serviço estrangeiro além do SMS; nada de e-mail, analytics, monitoramento de terceiro, IA ou WhatsApp. Telefone nunca vai para log.
 - Decisões difíceis de reverter, surpreendentes e com trade-off real viram ADR curto em `docs/adr/` (pela skill `domain-modeling`). Vocabulário do domínio fica em `GLOSSARY.md`.
