@@ -16,6 +16,6 @@ O Passaly é TypeScript de ponta a ponta, num monólito só: um repositório, um
 
 - Banco: Postgres com Drizzle e migrações versionadas. Os testes rodam contra Postgres real, não mock.
 - Ferramentas: pnpm, Vitest, Biome, TypeScript `strict` com `noUncheckedIndexedAccess`.
-- Sessão é do Passaly: cookie httpOnly de longa duração, revogável no Banimento e na exclusão. O fornecedor de SMS só verifica o telefone ([ADR 0010](0010-sms-pelo-identity-platform-com-blocking-function.md)).
+- Sessão é do Passaly: cookie httpOnly de longa duração, revogável no Banimento e na exclusão. O fornecedor de SMS só verifica o telefone ([ADR 0010](0010-sms-pela-twilio-verify.md)).
 - EXIF: o servidor regrava toda foto e descarta o original em memória. Não se confia no cliente.
 - Erros vão só para o log da plataforma, sem dado pessoal (telefone nunca vai para log). Sem monitoramento de terceiro.
