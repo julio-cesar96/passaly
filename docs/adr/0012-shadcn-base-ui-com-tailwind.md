@@ -22,3 +22,4 @@ As telas usam shadcn/ui na variante Base UI sobre Tailwind v4, mais `input-otp` 
 ## Nota de 2026-11-23
 
 - Ícones passam de `lucide-react` para **Phosphor** (`@phosphor-icons/react`), por escolha do fundador. Custo medido: 12 ícones somam 7,7 KB gzip contra 3,1 KB do lucide. Última versão no npm em 22/05/2025. Ver [pesquisa-referencias-ui.md](../descoberta/pesquisa-referencias-ui.md).
+- Dependências de suporte do código do shadcn, aprovadas na #31: `class-variance-authority` (variantes) e `cn` (junção de classes, do próprio shadcn). `tw-animate-css` e o pacote `shadcn` ficam fora.

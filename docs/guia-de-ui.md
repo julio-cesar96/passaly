@@ -25,7 +25,7 @@ Convenções de tela que não chegam a ser ADR. Decididas no grill de UI de 2026
 - `accent`, `secondary` e `muted` são fundo suave (menos de 1,4:1 contra a tela): não marcam estado sozinhos. Selecionado é `primary`.
 - `primary` e `destructive` são próximos (1,26:1 no claro, 1,11:1 no escuro): erro leva sempre ícone e texto, e ação destrutiva diz o verbo ("Excluir conta") e pede confirmação.
 
-- Contraste dos tokens garantido no CI por um teste do Vitest (a implementar na #31): os dois temas têm os mesmos tokens, em hex, e cada par usado atinge o mínimo. É a exceção à regra de testes do AGENTS.md. Testa tokens, não telas.
+- Contraste dos tokens garantido no CI por um teste do Vitest (`src/client/contraste.test.ts`): os dois temas têm os mesmos tokens, em hex, e cada par usado atinge o mínimo. É a exceção à regra de testes do AGENTS.md. Testa tokens, não telas.
 
 Tokens no formato do shadcn:
 
@@ -77,6 +77,13 @@ Tokens no formato do shadcn:
   }
 }
 ```
+
+- Sem opacidade em token (`bg-primary/80`, `ring-ring/50`), comum nos componentes do shadcn: sai dos pares testados. Anel de foco é `outline-ring` opaco, 2 px.
+
+## Estilo e CSP
+
+- `<style>` em runtime é bloqueado pelo CSP ([ADR 0013](adr/0013-nada-de-terceiro-no-navegador.md)). A injeção é desligada na origem (`CSPProvider disableStyleElements` em `main.tsx` para o Base UI; `#input-otp-style` no `index.html` para o `input-otp`) e as regras ficam em `src/client/ui/estilos-injetados.css`. Conferir esse arquivo ao atualizar qualquer das duas. Sem nonce, então serve à casca em cache da #9.
+- Componente novo do shadcn: trocar import `@/` por relativo com `.js`, altura por `--alvo-toque` (`min-h-alvo-toque`, `size-alvo-toque`) e conferir o console no build servido pelo Hono.
 
 ## Ícones
 
