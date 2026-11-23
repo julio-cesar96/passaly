@@ -4,6 +4,9 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Passaly</title>
+    <!-- Com este id presente, o input-otp não cria o <style> que o CSP bloquearia (ver ui/estilos-injetados.css). -->
+    <meta id="input-otp-style" name="input-otp-style" content="ui/estilos-injetados.css" />
+    <link rel="stylesheet" href="./estilos.css" />
   </head>
   <body>
     <div id="app"></div>

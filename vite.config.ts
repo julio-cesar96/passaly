@@ -1,4 +1,5 @@
 import { fileURLToPath } from 'node:url';
+import tailwindcss from '@tailwindcss/vite';
 import react from '@vitejs/plugin-react';
 import { defineConfig, type Plugin } from 'vite';
 
@@ -24,7 +25,7 @@ function soCodigoDoCliente(): Plugin {
 
 export default defineConfig({
   root: 'src/client',
-  plugins: [soCodigoDoCliente(), react()],
+  plugins: [soCodigoDoCliente(), react(), tailwindcss()],
   build: { outDir: '../../dist/client', emptyOutDir: true },
   server: { proxy: { '/api/': 'http://localhost:3000' } },
 });

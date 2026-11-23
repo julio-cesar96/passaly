@@ -1,3 +1,4 @@
+import { CSPProvider } from '@base-ui/react/csp-provider';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { createRootRoute, createRoute, createRouter, RouterProvider } from '@tanstack/react-router';
 import { StrictMode } from 'react';
@@ -20,8 +21,11 @@ if (!elemento) throw new Error('Elemento #app não encontrado');
 
 createRoot(elemento).render(
   <StrictMode>
-    <QueryClientProvider client={queryClient}>
-      <RouterProvider router={router} />
-    </QueryClientProvider>
+    {/* Sem <style> em runtime: o CSP bloqueia (ADR 0013). Regras em ui/estilos-injetados.css. */}
+    <CSPProvider disableStyleElements>
+      <QueryClientProvider client={queryClient}>
+        <RouterProvider router={router} />
+      </QueryClientProvider>
+    </CSPProvider>
   </StrictMode>,
 );

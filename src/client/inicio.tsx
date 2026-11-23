@@ -18,8 +18,8 @@ export function Inicio() {
   });
 
   return (
-    <main>
-      <h1>Passaly</h1>
+    <main className="p-4">
+      <h1 className="text-2xl font-semibold">Passaly</h1>
       <p>
         Último tique:{' '}
         {tique.isPending

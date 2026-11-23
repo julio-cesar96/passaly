@@ -3,6 +3,7 @@ import { serveStatic } from '@hono/node-server/serve-static';
 import { Hono } from 'hono';
 import { criarApi } from './app.js';
 import { lerConfig } from './config.js';
+import { mandarCsp } from './csp.js';
 import { conectar } from './db/cliente.js';
 import { log } from './log.js';
 import { montarPassalyDeProducao } from './montagem.js';
@@ -11,7 +12,7 @@ const config = lerConfig();
 const { db } = conectar(config.databaseUrl);
 const passaly = montarPassalyDeProducao(db);
 
-const app = new Hono().route('/', criarApi(passaly));
+const app = new Hono().use(mandarCsp).route('/', criarApi(passaly));
 
 if (config.producao) {
   // SPA estático (ADR 0008): arquivos do build e, para qualquer outra rota, o index.html.
