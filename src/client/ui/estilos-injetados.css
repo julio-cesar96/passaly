@@ -1,0 +1,49 @@
+/* biome-ignore-all lint/complexity/noImportantStyles: copia as regras do input-otp, que vencem o autofill do navegador. */
+/*
+ * Regras que as bibliotecas criariam num <style> em runtime, que o CSP do ADR 0013 bloqueia.
+ * Ficam aqui, servidas de 'self', e a injeção é desligada na origem. Ao atualizar uma das
+ * bibliotecas, conferir se a regra dela mudou.
+ */
+
+/* @base-ui/react 1.9.0 (Select e ScrollArea). Desligado por `disableStyleElements` em main.tsx. */
+.base-ui-disable-scrollbar {
+  scrollbar-width: none;
+}
+.base-ui-disable-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* input-otp 1.5.0. Desligado pelo elemento `#input-otp-style` do index.html. */
+[data-input-otp]::selection {
+  background: transparent !important;
+  color: transparent !important;
+}
+[data-input-otp]:autofill {
+  background: transparent !important;
+  color: transparent !important;
+  border-color: transparent !important;
+  opacity: 0 !important;
+  box-shadow: none !important;
+  -webkit-text-fill-color: transparent !important;
+}
+[data-input-otp]:-webkit-autofill {
+  background: transparent !important;
+  color: transparent !important;
+  border-color: transparent !important;
+  opacity: 0 !important;
+  box-shadow: none !important;
+  -webkit-text-fill-color: transparent !important;
+}
+@supports (-webkit-touch-callout: none) {
+  [data-input-otp] {
+    letter-spacing: -0.6em !important;
+    font-weight: 100 !important;
+    font-stretch: ultra-condensed;
+    font-optical-sizing: none !important;
+    left: -1px !important;
+    right: 1px !important;
+  }
+}
+[data-input-otp] + * {
+  pointer-events: all !important;
+}

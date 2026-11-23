@@ -1,0 +1,76 @@
+/* Só src/client entra na busca de classes: docs e skills também citam classes do Tailwind. */
+@import "tailwindcss" source("./");
+@import "./tema.css";
+@import "./ui/estilos-injetados.css";
+
+/* Convenções de docs/guia-de-ui.md. Sem a escala de cores do Tailwind, quatro tamanhos, dois pesos. */
+@theme {
+  --color-*: initial;
+  --text-*: initial;
+  --font-weight-*: initial;
+
+  --font-sans: system-ui, sans-serif;
+  --text-sm: 0.875rem;
+  --text-sm--line-height: 1.45;
+  --text-base: 1rem;
+  --text-base--line-height: 1.5;
+  --text-xl: 1.25rem;
+  --text-xl--line-height: 1.4;
+  --text-2xl: 1.75rem;
+  --text-2xl--line-height: 1.25;
+  --font-weight-normal: 400;
+  --font-weight-semibold: 600;
+
+  --radius-lg: 0.625rem;
+
+  --animate-caret-blink: caret-blink 1.25s ease-out infinite;
+  @keyframes caret-blink {
+    0%,
+    70%,
+    100% {
+      opacity: 1;
+    }
+    20%,
+    50% {
+      opacity: 0;
+    }
+  }
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  --spacing-alvo-toque: var(--alvo-toque);
+}
+
+:root {
+  --alvo-toque: 44px;
+}
+
+@layer base {
+  * {
+    border-color: var(--border);
+  }
+
+  body {
+    @apply bg-background font-sans text-base font-normal text-foreground;
+  }
+}

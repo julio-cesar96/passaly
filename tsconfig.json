@@ -14,7 +14,9 @@
     "verbatimModuleSyntax": true,
     "isolatedModules": true,
     "skipLibCheck": true,
-    "noEmit": true
+    "noEmit": true,
+    // Só para o CLI do shadcn saber onde gravar. No código, import relativo com .js; o Vite não resolve `@/`.
+    "paths": { "@/*": ["./src/client/*"] }
   },
   "include": ["src", "vite.config.ts", "vitest.config.ts", "drizzle.config.ts"]
 }
