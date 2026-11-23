@@ -36,6 +36,12 @@ jobs:
           node-version: 22
           cache: pnpm
       - run: pnpm install --frozen-lockfile
+      # ADR 0013: nada de terceiro no navegador. `git grep` sai com 1 quando não acha; erro (2+) também falha.
+      - name: Barrar recurso remoto em CSS e TSX
+        run: |
+          status=0
+          git grep -niE "url\([[:space:]]*[\"']?(https?:)?//|@import[[:space:]]+(url\(|[\"'](https?:)?//)" -- '*.css' '*.tsx' || status=$?
+          test "$status" -eq 1
       - run: pnpm exec biome ci .
       - run: pnpm typecheck
       - run: pnpm test
