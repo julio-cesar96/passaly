@@ -302,6 +302,7 @@ Só o que decorre dos fatos acima. As decisões ficam para `/grill-with-docs` (e
 11. Incorporar as cláusulas-padrão **por referência**, com as opções preenchidas e sem a frase "sem alteração" (caso da Twilio), atende o art. 16 da Res. CD/ANPD 19/2024 ("adoção integral e sem alteração")? Ver [pesquisa-sms-otp.md](pesquisa-sms-otp.md), seção 3.1. (Acrescentada no grill de SMS/OTP, 2026-11-16.)
 12. Aceitar os termos online de um provedor conta como "instrumento contratual" para adotar as cláusulas-padrão?
 13. Usar a API de SMS de um provedor estrangeiro na região de São Paulo, com entrega por parceiro de operadora, é transferência internacional?
+14. O art. 63 da LBI (acessibilidade obrigatória em "sítios da internet mantidos por empresas") alcança um PWA mantido por pessoa física? Se sim, o § 1º exige o símbolo de acessibilidade em destaque? Até a resposta, segue-se a WCAG 2.2 AA sem declarar conformidade nem exibir selo. Ver [pesquisa-ui.md](pesquisa-ui.md), seção 6.2. (Acrescentada no grill de UI, 2026-11-20.)
 
 ## 14. Fontes (acesso em 2026-11-11)
 

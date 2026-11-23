@@ -18,4 +18,5 @@ O telefone verificado por SMS continua sendo a identidade do Passaly (ADRs 0004 
 - **Contrato:** a Twilio incorpora as cláusulas da ANPD só por referência. Isso foi aceito enquanto o advogado não responde as perguntas 11 e 12 (ver nota no ADR 0007).
 - **Gatilhos para voltar ao Google:** o advogado recusar a incorporação por referência, ou o custo de SMS passar do teto. A troca fica restrita ao adaptador do verificador, porque os limites moram no nosso caso de uso.
 - **Política de privacidade:** declara a Twilio (EUA) como operadora do SMS e o prazo de retenção dela. A retenção não está confirmada: o artigo de suporte deu 403.
-- Antes de implementar o cadastro, um teste curto manda um código real pela Verify para o celular do fundador e confirma a entrega no Brasil pelo pool. O número não vai para código nem commit.
+- Antes de implementar o cadastro, um teste curto manda um código real pela Verify para o celular do fundador e confirma a entrega no Brasil pelo pool. O número não vai para código nem commit. O mesmo teste confere se o teclado do iPhone e do Android sugere o código no campo `autocomplete="one-time-code"`.
+- **Sem template customizado nem WebOTP no protótipo:** o template com `@dominio #codigo` é aprovado caso a caso e fica preso ao host, e o `*.run.app` é provisório. Pede-se o template junto com o domínio próprio, se ele vier.

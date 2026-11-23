@@ -8,6 +8,12 @@
       "computedHash": "d1c5b4151720e96135154bd593ac4986a1030a2bc81e2aaf129f8b11224af9a9",
       "installMode": "copy"
     },
+    "better-accessibility": {
+      "source": "jakubkrehel/skills",
+      "sourceType": "github",
+      "skillPath": "skills/better-accessibility/SKILL.md",
+      "computedHash": "c17ee1ce314fd6fbc8d0016163cd4836cc80e70218985ce6f47be8396f537380"
+    },
     "code-review": {
       "source": "mattpocock/skills",
       "sourceType": "github",
