@@ -1,0 +1,47 @@
+/* Paleta D. Barro neutro (docs/guia-de-ui.md). O contraste é garantido em contraste.test.ts. */
+:root {
+  color-scheme: light dark;
+  --background: #fafafa;
+  --foreground: #1f1c1b;
+  --card: #ffffff;
+  --card-foreground: #1f1c1b;
+  --popover: #ffffff;
+  --popover-foreground: #1f1c1b;
+  --primary: #a33e23;
+  --primary-foreground: #ffffff;
+  --secondary: #f4e5da;
+  --secondary-foreground: #58291a;
+  --muted: #f0f0f0;
+  --muted-foreground: #5a5a5a;
+  --accent: #f6dccb;
+  --accent-foreground: #58291a;
+  --destructive: #9b1c31;
+  --destructive-foreground: #ffffff;
+  --border: #8a8a8a;
+  --input: #737373;
+  --ring: #a33e23;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #151515;
+    --foreground: #edebea;
+    --card: #1d1d1d;
+    --card-foreground: #edebea;
+    --popover: #1d1d1d;
+    --popover-foreground: #edebea;
+    --primary: #ef8e6d;
+    --primary-foreground: #2a0f06;
+    --secondary: #33261f;
+    --secondary-foreground: #f1e0d5;
+    --muted: #262626;
+    --muted-foreground: #adadad;
+    --accent: #3d2a20;
+    --accent-foreground: #f7ddcd;
+    --destructive: #ff8fa0;
+    --destructive-foreground: #2b0509;
+    --border: #6e6e6e;
+    --input: #7d7d7d;
+    --ring: #ef8e6d;
+  }
+}
