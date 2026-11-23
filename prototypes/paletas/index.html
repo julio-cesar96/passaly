@@ -1,0 +1,39 @@
+<!doctype html>
+<!-- PROTÓTIPO DESCARTÁVEL. Três paletas do Passaly, cada uma em claro e escuro,
+     aplicadas às mesmas 3 telas a 360 px, com o contraste WCAG 2 calculado aqui mesmo.
+     Nada externo: abre com dois cliques (file://). Ver README.md. -->
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Paletas do Passaly (protótipo)</title>
+  <link rel="stylesheet" href="estilo.css">
+</head>
+<body>
+  <header class="topo-chrome chrome">
+    <h1>Protótipo descartável: paletas do Passaly</h1>
+    <p>Cada coluna é uma paleta num tema, com as telas a 360 px. A tabela de cada coluna confere o contraste
+      dos tokens (WCAG 2: texto 4,5:1, texto grande 3:1, borda/estado/foco 3:1). Mude a cor de um token em
+      "Tokens" para ver a conta mudar. Setas ← → do teclado trocam a paleta de todas as colunas.</p>
+    <div class="grupo"><span class="rotulo">Tela</span><span class="grupo" id="ctrl-tela"></span></div>
+    <div class="grupo"><span class="rotulo">Campo do código</span><span class="grupo" id="ctrl-campo"></span></div>
+    <div class="grupo"><span class="rotulo">Comparar</span>
+      <button type="button" data-atalho="claro">Todas no claro</button>
+      <button type="button" data-atalho="escuro">Todas no escuro</button>
+      <button type="button" data-atalho="par">1ª paleta: claro × escuro</button>
+    </div>
+    <div class="grupo"><span class="rotulo">Resumo</span><div id="resumo"></div></div>
+  </header>
+
+  <main class="colunas" id="colunas"></main>
+
+  <nav class="barra chrome" aria-label="Trocar paleta">
+    <button type="button" data-gira="-1" aria-label="Paleta anterior">←</button>
+    <span id="barra-rotulo" aria-live="polite"></span>
+    <button type="button" data-gira="1" aria-label="Próxima paleta">→</button>
+  </nav>
+
+  <script src="paletas.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
