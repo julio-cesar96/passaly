@@ -6,7 +6,7 @@ Fonte única da verdade para qualquer agente de IA neste repositório (Claude Co
 
 **Passaly** — PWA (depois app) para trocar e doar itens de bebê (fraldas, roupas, carrinho, brinquedos etc.) entre pais. Nasceu de um problema real: muita coisa comprada não dá tempo de usar, e a troca hoje acontece espalhada em grupos de Facebook. A ideia é centralizar isso.
 
-Estágio: **spec aprovada e stack definida**; ainda sem código de aplicação. O primeiro protótipo é só fralda descartável na Ilha do Governador (issue #2).
+Estágio: **spec aprovada, stack definida e tickets criados**; o código tem só o esqueleto do monólito (issue #5). O primeiro protótipo é só fralda descartável na Ilha do Governador (issue #2).
 
 ## Como trabalhamos
 
@@ -15,16 +15,16 @@ Estágio: **spec aprovada e stack definida**; ainda sem código de aplicação. 
 - Skills de comando (`/grill-with-docs`, `/to-spec`, `/to-tickets`, `/implement`, `/setup-matt-pocock-skills` etc.) são **acionadas só pelo usuário**. O agente não as dispara sozinho; pode sugerir qual rodar.
 - Não inventar fato. Para pesquisa (concorrentes, regras de segurança de produto infantil, LGPD), usar `/research` e citar fonte com URL.
 
-## Fase atual: STACK DEFINIDA, ANTES DOS TICKETS
+## Fase atual: IMPLEMENTAÇÃO PELOS TICKETS
 
 - **Spec aprovada:** issue #2 (primeiro protótipo). Em divergência com ela, valem os ADRs e o `GLOSSARY.md`.
-- **Stack definida** (ADRs 0008 a 0011; fatos em `docs/descoberta/pesquisa-stack.md`):
+- **Stack definida** (ADRs 0008 a 0013; fatos em `docs/descoberta/pesquisa-stack.md`):
   - TypeScript num monólito: SPA Vite + React + TanStack Router/Query, servido por Hono em Node, sem SSR. Postgres com Drizzle. pnpm, Vitest, Biome, TS estrito (ADR 0008).
   - Tudo em São Paulo: Cloud Run + Cloud Scheduler, Neon (`aws-sa-east-1`, Free + `pg_dump` diário de 7 dias), fotos em bucket privado do GCS com link assinado de 5 min, segredos no Secret Manager preso à região, URL `*.run.app` (ADR 0009).
   - SMS: Twilio Verify chamada só pelo servidor, depois que o caso de uso "solicitar código" aplica os limites; volta ao Google se o advogado recusar as cláusulas por referência (ADR 0010).
   - Tarefas no tempo: tique idempotente de 15 min chamando o mesmo caso de uso do relógio dos testes (ADR 0011).
   - UI: shadcn/ui (Base UI) + Tailwind v4, código dos componentes em `src/client/ui/` (ADR 0012); nada de terceiro no navegador, garantido por CSP (ADR 0013). Convenções de tela (toque de 44 px, tipografia, temas, landing, roteiro TalkBack como critério de aceite) em `docs/guia-de-ui.md`. Antes de escrever tela, ler lá "Comportamento vem de primitivo" (não reescrever foco, teclado, seleção nem ARIA à mão) e os tokens de "Cor e tema".
-- **Próximo passo:** `/to-tickets` a partir da #2. O ticket de cadastro começa com um teste curto de entrega real pela Twilio Verify (ADR 0010).
+- **Próximo passo:** #6 (teste de entrega real pela Twilio Verify, manual do fundador, ADR 0010) e #31 (base de UI) podem andar em paralelo; as duas bloqueiam o cadastro (#7). Ordem e bloqueios ficam nas issues.
 - Código de aplicação só a partir dos tickets, pelo fluxo `/implement` com `/tdd`. Testes só pela interface de casos de uso, com relógio controlável e SMS falso. Única exceção: o teste de contraste dos tokens de cor (`docs/guia-de-ui.md`), que lê o CSS.
 - Nenhum serviço estrangeiro além do SMS; nada de e-mail, analytics, monitoramento de terceiro, IA ou WhatsApp. Telefone nunca vai para log.
 - "Nada de IA" vale para o **produto**: nenhum dado de usuário passa por IA. IA no desenvolvimento e no design é permitida.

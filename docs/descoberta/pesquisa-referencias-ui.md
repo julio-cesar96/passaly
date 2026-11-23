@@ -47,7 +47,7 @@ O ADR 0013 pede `default-src 'self'`, que sem `style-src` próprio bloqueia `<st
 - `input-otp` 1.5.0 cria um `<style>` em runtime e aceita `nonce` (lido no código do pacote);
 - o Base UI renderiza `<style>` em alguns componentes e oferece `CSPProvider` ([doc](https://base-ui.com/react/utils/csp-provider)).
 
-O nonce muda a cada resposta, e a casca do PWA fica em cache (#9). Como os dois convivem **não foi testado**: conferir no ticket que ligar o CSP **(inferência)**.
+O nonce muda a cada resposta, e a casca do PWA fica em cache (#9). Como os dois convivem **não foi testado**: conferir na #31, que liga o CSP **(inferência)**.
 
 ## Phosphor
 

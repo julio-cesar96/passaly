@@ -25,7 +25,7 @@ Convenções de tela que não chegam a ser ADR. Decididas no grill de UI de 2026
 - `accent`, `secondary` e `muted` são fundo suave (menos de 1,4:1 contra a tela): não marcam estado sozinhos. Selecionado é `primary`.
 - `primary` e `destructive` são próximos (1,26:1 no claro, 1,11:1 no escuro): erro leva sempre ícone e texto, e ação destrutiva diz o verbo ("Excluir conta") e pede confirmação.
 
-- Contraste dos tokens garantido no CI por um teste do Vitest (a implementar no ticket que criar o CSS): os dois temas têm os mesmos tokens, em hex, e cada par usado atinge o mínimo. É a exceção à regra de testes do AGENTS.md. Testa tokens, não telas.
+- Contraste dos tokens garantido no CI por um teste do Vitest (a implementar na #31): os dois temas têm os mesmos tokens, em hex, e cada par usado atinge o mínimo. É a exceção à regra de testes do AGENTS.md. Testa tokens, não telas.
 
 Tokens no formato do shadcn:
 
