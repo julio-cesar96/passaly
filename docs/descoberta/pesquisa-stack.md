@@ -137,6 +137,15 @@
 - **Fraud Guard** [T3]: "uses SMS fraud detection to block suspicious messages". Tem níveis Basic, Standard (padrão, falso positivo abaixo de 1%) e Max (abaixo de 2%). A Twilio pergunta se o cliente quer ligar ao criar o serviço; preço não informado. "Geo Permissions" por país ("make sure that destinations outside of your business focus are turned off"). **Alta.**
 - **Teto global diário**: não achei recurso nativo de teto de gasto. Dá para fazer com um bucket por chave fixa (ex.: `global`, max N, intervalo 86400). **(inferência)**
 - **Onde processa**: EUA (Twilio Inc. como importador), com BR SCCs por referência (ver [pesquisa-sms-otp.md](pesquisa-sms-otp.md) §3.1).
+- **Ensaio no trial (fundador, 2026-11-23, #6)**: um código pelo "Try out Verify", sem mandar `Locale`.
+  - Chegou ao celular do fundador em segundos (sem medida exata) e a conferência retornou aprovada.
+  - SMS comum, sem RCS. Remetente: celular comum.
+  - Texto, com o código trocado: "O seu codigo de verificação para (SAMPLE TEST) é: 123456". Só o código e o nome do serviço, sem apelido, bairro ou link.
+  - 56 caracteres com "ç" e "ã", que não cabem no GSM-7: 1 segmento de até 70. Com "Passaly" no lugar do nome de teste seriam 50. **(inferência: o texto real pode ser outro)**
+  - **Não prova** remetente, texto nem entrega do serviço "Passaly": o trial usa número e modelo de teste [T7].
+- **Limites do trial** [T7][T8]: sem cartão, 30 dias, 40 verificações, até 5 números verificados, só o país do cadastro. Criar serviço próprio só depois do upgrade. Para enviar a qualquer número, a Twilio precisa aprovar um Primary Customer Profile; o perfil "Individual" pede documento com foto e foto do rosto [T9]. **Não confirmado**: saldo inicial mínimo, prazo de aprovação e se o perfil Individual sustenta produção.
+- **Segmentos em português**: mensagens em `pt` e `pt_BR` podem passar de um segmento, e o preço é por segmento [T10].
+- **RCS**: a tela do ensaio diz "Automatically upgrades to branded RCS when available", e a doc diz que RCS é só depois do upgrade [T8]. Conferir no teste real se dá para ficar só em SMS.
 
 ## 4. Hospedagem em São Paulo (Node/TS + Postgres)
 
@@ -253,6 +262,10 @@ Twilio:
 - [T4] Twilio, SMS pricing Brazil. https://www.twilio.com/en-us/sms/pricing/br
 - [T5] Twilio, Brazil SMS guidelines. https://www.twilio.com/en-us/guidelines/br/sms
 - [T6] **[índice de busca]** Twilio Support, short code lease prices (403 no acesso direto). https://support.twilio.com/hc/en-us/articles/226460288
+- [T7] Twilio Docs, Try out Twilio Verify (acesso em 2026-11-23). https://www.twilio.com/docs/usage/trials/try-out-verify
+- [T8] Twilio Docs, Twilio trial account (acesso em 2026-11-23). https://www.twilio.com/docs/usage/trials
+- [T9] Twilio Docs, Console: Create a Primary Customer Profile (acesso em 2026-11-23). https://www.twilio.com/docs/trust-hub/trusthub-rest-api/console-create-a-primary-customer-profile
+- [T10] Twilio Docs, Verify developer best practices (acesso em 2026-11-23). https://www.twilio.com/docs/verify/developer-best-practices
 
 Google Cloud:
 - [G1] Cloud SQL pricing (tabela "Sao Paulo (southamerica-east1)" extraída do HTML). https://cloud.google.com/sql/pricing
