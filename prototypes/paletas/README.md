@@ -32,7 +32,7 @@ As 4 passam nos 25 pares, nos dois temas. As bordas (`border`) ficam em 3,1 a 3,
 
 ## Resultado (2026-11-23)
 
-Escolhida a **B. Barro** pelo fundador. Tokens em [docs/guia-de-ui.md](../../docs/guia-de-ui.md), seção "Cor e tema".
+Escolhida a **D. Barro neutro** pelo fundador (primeiro a B, depois a variante D). Tokens em [docs/guia-de-ui.md](../../docs/guia-de-ui.md), seção "Cor e tema".
 
 Corrigido depois da escolha, sem mexer em cor: "Trocar número" (18 px) e o logo (32 px) estavam abaixo de 44 px; bairro e validade estavam em 14 px; o card afirmava "pacote fechado" e a validade como fato, sem "o Anunciante declarou" (história 32 da #2).
 
@@ -40,4 +40,4 @@ Corrigido depois da escolha, sem mexer em cor: "Trocar número" (18 px) e o logo
 
 A B junta creme e terracota, combinação que a pesquisa de UI lista como padrão de página gerada. A D troca `background`, `muted`, `border`, `input` e os textos neutros por cinza (no escuro, também `card` e `popover`) e mantém `primary`, `secondary`, `accent` e `destructive` da B.
 
-`#tela=todas&estado=normal&col=B.claro,D.claro,B.escuro,D.escuro` compara as duas. **Falta o fundador escolher entre B e D.**
+`#tela=todas&estado=normal&col=B.claro,D.claro,B.escuro,D.escuro` compara as duas.
