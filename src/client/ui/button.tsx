@@ -3,7 +3,7 @@ import { cva, type VariantProps } from 'class-variance-authority';
 import { cn } from 'cn';
 
 const buttonVariants = cva(
-  "inline-flex min-h-alvo-toque min-w-alvo-toque items-center justify-center gap-2 rounded-lg border border-transparent bg-clip-padding text-base font-semibold select-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring active:not-data-disabled:translate-y-px data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-5",
+  "inline-flex min-h-alvo-toque min-w-alvo-toque items-center justify-center gap-2 rounded-lg border border-transparent bg-clip-padding text-base font-semibold select-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring active:not-data-disabled:translate-y-px data-disabled:pointer-events-none data-disabled:bg-muted data-disabled:text-muted-foreground [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-5",
   {
     variants: {
       variant: {
@@ -42,4 +42,4 @@ function Button({
   );
 }
 
-export { Button, buttonVariants };
+export { Button };

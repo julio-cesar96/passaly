@@ -76,6 +76,7 @@ const PARES: [frente: string, fundo: string, tipo: keyof typeof MINIMOS][] = [
   ['primary', 'accent', 'grande'],
   ['input', 'background', 'componente'],
   ['input', 'card', 'componente'],
+  ['input', 'accent', 'componente'],
   ['border', 'background', 'componente'],
   ['border', 'card', 'componente'],
   ['primary', 'background', 'componente'],

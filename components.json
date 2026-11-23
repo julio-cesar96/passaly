@@ -11,10 +11,10 @@
   },
   "iconLibrary": "phosphor",
   "aliases": {
-    "components": "@",
+    "components": "@/componentes",
     "ui": "@/ui",
-    "lib": "@",
-    "hooks": "@",
+    "lib": "@/lib",
+    "hooks": "@/hooks",
     "utils": "cn"
   }
 }

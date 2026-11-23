@@ -40,7 +40,7 @@ jobs:
       - name: Barrar recurso remoto em CSS e TSX
         run: |
           status=0
-          git grep -niE "url\([[:space:]]*[\"']?(https?:)?//|@import[[:space:]]+(url\(|[\"'](https?:)?//)" -- '*.css' '*.tsx' || status=$?
+          git grep -niE "url\([[:space:]]*[\"']?(https?:)?//|@import[[:space:]]*(url\(|[\"'](https?:)?//)" -- '*.css' '*.tsx' || status=$?
           test "$status" -eq 1
       - run: pnpm exec biome ci .
       - run: pnpm typecheck
