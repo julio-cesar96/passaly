@@ -20,3 +20,9 @@ O telefone verificado por SMS continua sendo a identidade do Passaly (ADRs 0004 
 - **Política de privacidade:** declara a Twilio (EUA) como operadora do SMS e o prazo de retenção dela. A retenção não está confirmada: o artigo de suporte deu 403.
 - Antes de implementar o cadastro, um teste curto manda um código real pela Verify para o celular do fundador e confirma a entrega no Brasil pelo pool. O número não vai para código nem commit. O mesmo teste confere se o teclado do iPhone e do Android sugere o código no campo `autocomplete="one-time-code"`.
 - **Sem template customizado nem WebOTP no protótipo:** o template com `@dominio #codigo` é aprovado caso a caso e fica preso ao host, e o `*.run.app` é provisório. Pede-se o template junto com o domínio próprio, se ele vier.
+
+## Nota de 2026-11-23
+
+- **O teste de entrega passa para antes do adaptador real (#26)**, e não mais antes do cadastro (#7), que usa o SMS falso. Motivo: o teste no serviço "Passaly" exige upgrade da conta, e o fundador preferiu não pagar agora (a tela oferecia saldo inicial de US$ 20, US$ 50, US$ 100 ou outro valor). O ensaio grátis chegou e foi aprovado, mas pelo número e modelo de teste da Twilio ([pesquisa-stack.md](../descoberta/pesquisa-stack.md), seção 3).
+- **Risco aceito:** se a entrega real falhar, a volta ao Google muda também a tela do cadastro, não só o adaptador, porque o SMS parte do navegador com reCAPTCHA.
+- **Choque com o [ADR 0013](0013-nada-de-terceiro-no-navegador.md):** o reCAPTCHA é terceiro no navegador. O gatilho "voltar ao Google" acima não funciona sem rever o 0013. Fica em aberto até o gatilho acontecer.
