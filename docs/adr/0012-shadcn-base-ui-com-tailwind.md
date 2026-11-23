@@ -18,3 +18,7 @@ As telas usam shadcn/ui na variante Base UI sobre Tailwind v4, mais `input-otp` 
 - Correção de acessibilidade no upstream não chega sozinha. Se um bug de acessibilidade aparecer, conferir o componente do shadcn/Base UI mais recente antes de corrigir à mão.
 - Item de registry de terceiro só entra depois de lido, e nunca com recurso remoto ([ADR 0013](0013-nada-de-terceiro-no-navegador.md)).
 - **Landing:** é a rota pública `/` do mesmo SPA, com os mesmos componentes. Sem SEO (o [ADR 0008](0008-spa-com-hono-sem-ssr.md) continua valendo): o tráfego vem de link postado em grupo de Facebook e WhatsApp, e a prévia do link vem de tags Open Graph estáticas no `index.html`, que os robôs leem sem rodar JS.
+
+## Nota de 2026-11-23
+
+- Ícones passam de `lucide-react` para **Phosphor** (`@phosphor-icons/react`), por escolha do fundador. Custo medido: 12 ícones somam 7,7 KB gzip contra 3,1 KB do lucide. Última versão no npm em 22/05/2025. Ver [pesquisa-referencias-ui.md](../descoberta/pesquisa-referencias-ui.md).

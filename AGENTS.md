@@ -23,9 +23,9 @@ Estágio: **spec aprovada e stack definida**; ainda sem código de aplicação. 
   - Tudo em São Paulo: Cloud Run + Cloud Scheduler, Neon (`aws-sa-east-1`, Free + `pg_dump` diário de 7 dias), fotos em bucket privado do GCS com link assinado de 5 min, segredos no Secret Manager preso à região, URL `*.run.app` (ADR 0009).
   - SMS: Twilio Verify chamada só pelo servidor, depois que o caso de uso "solicitar código" aplica os limites; volta ao Google se o advogado recusar as cláusulas por referência (ADR 0010).
   - Tarefas no tempo: tique idempotente de 15 min chamando o mesmo caso de uso do relógio dos testes (ADR 0011).
-  - UI: shadcn/ui (Base UI) + Tailwind v4, código dos componentes em `src/client/ui/` (ADR 0012); nada de terceiro no navegador, garantido por CSP (ADR 0013). Convenções de tela (toque de 44 px, tipografia, temas, landing, roteiro TalkBack como critério de aceite) em `docs/guia-de-ui.md`.
+  - UI: shadcn/ui (Base UI) + Tailwind v4, código dos componentes em `src/client/ui/` (ADR 0012); nada de terceiro no navegador, garantido por CSP (ADR 0013). Convenções de tela (toque de 44 px, tipografia, temas, landing, roteiro TalkBack como critério de aceite) em `docs/guia-de-ui.md`. Antes de escrever tela, ler lá "Comportamento vem de primitivo" (não reescrever foco, teclado, seleção nem ARIA à mão) e os tokens de "Cor e tema".
 - **Próximo passo:** `/to-tickets` a partir da #2. O ticket de cadastro começa com um teste curto de entrega real pela Twilio Verify (ADR 0010).
-- Código de aplicação só a partir dos tickets, pelo fluxo `/implement` com `/tdd`. Testes só pela interface de casos de uso, com relógio controlável e SMS falso.
+- Código de aplicação só a partir dos tickets, pelo fluxo `/implement` com `/tdd`. Testes só pela interface de casos de uso, com relógio controlável e SMS falso. Única exceção: o teste de contraste dos tokens de cor (`docs/guia-de-ui.md`), que lê o CSS.
 - Nenhum serviço estrangeiro além do SMS; nada de e-mail, analytics, monitoramento de terceiro, IA ou WhatsApp. Telefone nunca vai para log.
 - "Nada de IA" vale para o **produto**: nenhum dado de usuário passa por IA. IA no desenvolvimento e no design é permitida.
 - Decisões difíceis de reverter, surpreendentes e com trade-off real viram ADR curto em `docs/adr/` (pela skill `domain-modeling`). Vocabulário do domínio fica em `GLOSSARY.md`.

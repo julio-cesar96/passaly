@@ -18,8 +18,96 @@ Convenções de tela que não chegam a ser ADR. Decididas no grill de UI de 2026
 
 ## Cor e tema
 
-- Paleta escolhida pelo fundador entre 3 opções de um protótipo descartável, sem o clichê rosa/azul de bebê. Vira os tokens CSS do shadcn.
-- Claro e escuro seguindo o sistema (`prefers-color-scheme`), sem botão de alternar no protótipo.
+- Paleta: **D. Barro neutro**, escolhida pelo fundador em 2026-11-23 num protótipo descartável (branch `prototipo/paletas`): barro em ação, selo e destaque, cinza neutro no resto. É a B sem o fundo creme, que com terracota cai num padrão de página gerada ([pesquisa-ui.md](descoberta/pesquisa-ui.md)).
+- Claro e escuro seguindo o sistema (`prefers-color-scheme`), sem botão de alternar no protótipo. O tema padrão do shadcn traz `@custom-variant dark (&:is(.dark *))`, que espera a classe `.dark`: tirar essa linha, para o `dark:` do Tailwind seguir o sistema.
+- Tela usa o token pelo papel (`bg-primary`, `text-muted-foreground`), nunca hex nem cor da escala do Tailwind.
+- `border` só sobre `background`, `card` e `popover`. Sobre `muted` falha no escuro (2,97:1) e sobre `accent` e `secondary` falha nos dois temas. Sobre `muted`, usar `input` (4,16:1 e 3,68:1).
+- `accent`, `secondary` e `muted` são fundo suave (menos de 1,4:1 contra a tela): não marcam estado sozinhos. Selecionado é `primary`.
+- `primary` e `destructive` são próximos (1,26:1 no claro, 1,11:1 no escuro): erro leva sempre ícone e texto, e ação destrutiva diz o verbo ("Excluir conta") e pede confirmação.
+
+- Contraste dos tokens garantido no CI por um teste do Vitest (a implementar no ticket que criar o CSS): os dois temas têm os mesmos tokens, em hex, e cada par usado atinge o mínimo. É a exceção à regra de testes do AGENTS.md. Testa tokens, não telas.
+
+Tokens no formato do shadcn:
+
+```css
+:root {
+  color-scheme: light dark;
+  --background: #FAFAFA;
+  --foreground: #1F1C1B;
+  --card: #FFFFFF;
+  --card-foreground: #1F1C1B;
+  --popover: #FFFFFF;
+  --popover-foreground: #1F1C1B;
+  --primary: #A33E23;
+  --primary-foreground: #FFFFFF;
+  --secondary: #F4E5DA;
+  --secondary-foreground: #58291A;
+  --muted: #F0F0F0;
+  --muted-foreground: #5A5A5A;
+  --accent: #F6DCCB;
+  --accent-foreground: #58291A;
+  --destructive: #9B1C31;
+  --destructive-foreground: #FFFFFF;
+  --border: #8A8A8A;
+  --input: #737373;
+  --ring: #A33E23;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #151515;
+    --foreground: #EDEBEA;
+    --card: #1D1D1D;
+    --card-foreground: #EDEBEA;
+    --popover: #1D1D1D;
+    --popover-foreground: #EDEBEA;
+    --primary: #EF8E6D;
+    --primary-foreground: #2A0F06;
+    --secondary: #33261F;
+    --secondary-foreground: #F1E0D5;
+    --muted: #262626;
+    --muted-foreground: #ADADAD;
+    --accent: #3D2A20;
+    --accent-foreground: #F7DDCD;
+    --destructive: #FF8FA0;
+    --destructive-foreground: #2B0509;
+    --border: #6E6E6E;
+    --input: #7D7D7D;
+    --ring: #EF8E6D;
+  }
+}
+```
+
+## Ícones
+
+- Phosphor (`@phosphor-icons/react`), escolha do fundador em 2026-11-23 no lugar de `lucide-react` ([ADR 0012](adr/0012-shadcn-base-ui-com-tailwind.md)). No shadcn: `"iconLibrary": "phosphor"` no `components.json`.
+- Uma família só: componente do shadcn que chegar com `lucide-react` é trocado antes do PR.
+- Importar por arquivo (`@phosphor-icons/react/dist/csr/MapPin`), para o Vite não transpilar o pacote inteiro em desenvolvimento.
+- Peso `regular`; `fill` só para estado ativo. Ícone ao lado de texto leva `aria-hidden`; botão só de ícone leva nome acessível.
+
+## Comportamento vem de primitivo
+
+Foco, teclado, seleção, fechamento, ARIA e anúncio a leitor de tela não são escritos à mão. Antes de escrever `role=`, `aria-*` de estado, `tabIndex`, `onKeyDown` ou ligação por `id`, usar o primeiro que servir:
+
+1. HTML nativo (`<button>`, `<a href>`, `<select>`, `<details>`, `<input type="file">`);
+2. componente em `src/client/ui/` (shadcn sobre Base UI);
+3. primitivo do Base UI que ainda não copiamos;
+4. React Aria, plano B por componente ([ADR 0012](adr/0012-shadcn-base-ui-com-tailwind.md)).
+
+| Precisa de | Usar | Não fazer | No UI SDK (referência) |
+|---|---|---|---|
+| Código por SMS | `input-otp` | `<input>` cru filtrando dígito | `otp-input` |
+| Rótulo, ajuda e erro de campo | `Field` | `id` e `aria-describedby` à mão | `field` |
+| Filtro de tamanho (um só) | `ToggleGroup` | botões com `aria-pressed` e laço | `toggle` (grupo) |
+| Bairro | `<select>` nativo | lista própria com `role="listbox"` | `select` |
+| Botão ocupado ou em espera | `Button` com `focusableWhenDisabled` | `disabled` que tira o foco | `button` |
+| Confirmação (excluir conta, desistir) | `AlertDialog` | `div` com `role="dialog"` | `alert-dialog` |
+| Folha de baixo | `Drawer` | `div` fixa com toque próprio | `drawer` |
+| Aviso passageiro | `Toast` | `div` com `setTimeout` | `toast` |
+
+Fazer à mão só se nenhum servir, com o motivo no PR e o passo correspondente do roteiro TalkBack.
+
+**UI SDK (`@ui-sdk`) é referência, não dependência**: beta de 12/11/2026 e sobrepõe o Base UI. Ler a doc para saber que comportamentos um componente precisa cobrir é bem-vindo; instalar exige rever o ADR 0012. `createAgent` e WebMCP ficam fora em qualquer caso, porque expõem a tela a agente de IA (AGENTS.md, "Nada de IA"). Fatos em [pesquisa-referencias-ui.md](descoberta/pesquisa-referencias-ui.md).
 
 ## Código por SMS
 
@@ -34,7 +122,7 @@ Convenções de tela que não chegam a ser ADR. Decididas no grill de UI de 2026
 - Ordem: título curto + linha de apoio → os 2 botões → tela real em HTML (Post de exemplo com dados fictícios) → faixa de compromissos → "Como funciona" em 3 passos (publica com foto do pacote → alguém pede → vocês combinam num ponto público da Ilha) → rodapé com termos, privacidade e contato do titular. Sem eyebrow em caixa alta e sem grade decorativa.
 - Da referência ([ref-landingpage.jpeg](descoberta/referencias-design/ref-landingpage.jpeg)) vale o layout, não o degradê nem a fonte de display.
 - Sem prova social no lançamento. No lugar dos logos, uma faixa de compromissos: dados guardados no Brasil; foto só do pacote, nunca de pessoas; sem revenda; só precisa do celular.
-- Imagens: nenhuma pessoa, nenhum bebê, nada gerado por IA. Hero com a tela real do Passaly em HTML (fundo opaco); demais imagens são fotos do fundador de pacotes reais, em AVIF/WebP com `srcset` e `loading="lazy"` abaixo da dobra. Ícones `lucide-react`.
+- Imagens: nenhuma pessoa, nenhum bebê, nada gerado por IA. Hero com a tela real do Passaly em HTML (fundo opaco); demais imagens são fotos do fundador de pacotes reais, em AVIF/WebP com `srcset` e `loading="lazy"` abaixo da dobra. Ícones Phosphor (seção "Ícones").
 - Um número agregado de Entregas, se vier, entra com piso mínimo e nome próprio no glossário.
 
 ## Rotas públicas
