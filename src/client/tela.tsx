@@ -26,7 +26,7 @@ export function Tela({
   }, [titulo, focarTitulo]);
 
   return (
-    <main className="mx-auto flex max-w-md flex-col gap-6 p-4 sm:pt-[18vh]">
+    <main className="mx-auto flex max-w-md flex-col gap-6 p-4 pt-[10vh] sm:pt-[18vh]">
       <h1 ref={h1} tabIndex={-1} className="text-2xl font-semibold outline-none">
         {titulo}
       </h1>
