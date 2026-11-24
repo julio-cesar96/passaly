@@ -2,6 +2,7 @@ import { Form } from '@base-ui/react/form';
 import { useMutation } from '@tanstack/react-query';
 import { REGEXP_ONLY_DIGITS } from 'input-otp';
 import { type FormEvent, useState } from 'react';
+import { mascararTelefone } from '../../compartilhado/telefone.js';
 import { AVISO_DO_SMS } from '../../compartilhado/textos.js';
 import { api } from '../api.js';
 import { AvisoDeErro, SEM_CONEXAO, Tela } from '../tela.js';
@@ -17,11 +18,6 @@ async function conferirCodigo(entrada: { telefone: string; codigo: string }) {
   const resposta = await api.codigo.conferir.$post({ json: entrada });
   if (resposta.status !== 200 && resposta.status !== 422) throw new Error('código não conferido');
   return resposta.json();
-}
-
-/** +5521999999999 → (21) 99999-9999, para a pessoa ver se errou o número. */
-function formatar(telefone: string): string {
-  return telefone.replace(/^\+55(\d{2})(\d{4,5})(\d{4})$/, '($1) $2-$3');
 }
 
 export function Codigo({
@@ -79,7 +75,7 @@ export function Codigo({
         <Field name="codigo">
           <FieldLabel>Código de 6 números</FieldLabel>
           <FieldDescription>
-            Mandamos por SMS para {formatar(telefone)}. Vale por 10 minutos.
+            Mandamos por SMS para {mascararTelefone(telefone)}. Vale por 10 minutos.
           </FieldDescription>
           <CampoDoCodigo value={codigo} onValueChange={setCodigo} pattern={REGEXP_ONLY_DIGITS} />
           <FieldError role="alert" />

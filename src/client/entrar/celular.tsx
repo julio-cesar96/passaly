@@ -5,7 +5,8 @@ import { paraE164 } from '../../compartilhado/telefone.js';
 import { AVISO_DO_SMS } from '../../compartilhado/textos.js';
 import { AvisoDeErro, SEM_CONEXAO, Tela } from '../tela.js';
 import { Button } from '../ui/button.js';
-import { Field, FieldDescription, FieldError, FieldLabel, Input } from '../ui/field.js';
+import { Field, FieldDescription, FieldError, FieldLabel } from '../ui/field.js';
+import { CampoDoCelular } from './campo-do-celular.js';
 import { pedirCodigo, textoDaRecusa } from './pedir-codigo.js';
 
 const TELEFONE_INVALIDO = textoDaRecusa({ ok: false, motivo: 'telefone-invalido' });
@@ -45,7 +46,7 @@ export function Celular({
         <Field name="telefone">
           <FieldLabel>Celular</FieldLabel>
           <FieldDescription>Com DDD, como (21) 99999-9999.</FieldDescription>
-          <Input type="tel" inputMode="tel" autoComplete="tel" />
+          <CampoDoCelular />
           <FieldError role="alert" />
         </Field>
         <p>{AVISO_DO_SMS.texto}</p>
