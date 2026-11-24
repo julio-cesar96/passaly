@@ -8,7 +8,9 @@ Convenções de tela que não chegam a ser ADR. Decididas no grill de UI de 2026
 - Área de toque: token `--alvo-toque: 44px` em botão, ícone clicável, item de lista e campo. 24 px só nas exceções do 2.5.8 (ex.: link dentro de texto).
 - Revisão de tela: skill `better-accessibility` (jakubkrehel/skills, commit `672ae44`). Ela trata 44 px como recomendação; aqui é regra do projeto.
 - Contraste: texto ≥ 4,5:1 (≥ 3:1 se grande); componente e estado ≥ 3:1. Conferido nos dois temas.
-- **Roteiro TalkBack** (critério de aceite de todo ticket de tela, feito pelo fundador num Android): entrar com o código; publicar um Post com foto; fazer um Pedido; combinar e confirmar a Entrega; excluir a conta. Rodar só os passos que a tela do ticket toca. VoiceOver quando houver iPhone à mão.
+- **Roteiro de leitor de tela** (feito pelo fundador): entrar com o código; publicar um Post com foto; fazer um Pedido; combinar e confirmar a Entrega; excluir a conta.
+  - Critério de aceite de todo ticket de tela: VoiceOver no iPhone, só os passos que a tela do ticket toca.
+  - Antes de abrir para as famílias: o roteiro inteiro com TalkBack, num Android emprestado.
 
 ## Tipografia
 
@@ -112,7 +114,7 @@ Foco, teclado, seleção, fechamento, ARIA e anúncio a leitor de tela não são
 | Folha de baixo | `Drawer` | `div` fixa com toque próprio | `drawer` |
 | Aviso passageiro | `Toast` | `div` com `setTimeout` | `toast` |
 
-Fazer à mão só se nenhum servir, com o motivo no PR e o passo correspondente do roteiro TalkBack.
+Fazer à mão só se nenhum servir, com o motivo no PR e o passo correspondente do roteiro de leitor de tela.
 
 **UI SDK (`@ui-sdk`) é referência, não dependência**: beta de 12/11/2026 e sobrepõe o Base UI. Ler a doc para saber que comportamentos um componente precisa cobrir é bem-vindo; instalar exige rever o ADR 0012. `createAgent` e WebMCP ficam fora em qualquer caso, porque expõem a tela a agente de IA (AGENTS.md, "Nada de IA"). Fatos em [pesquisa-referencias-ui.md](descoberta/pesquisa-referencias-ui.md).
 
