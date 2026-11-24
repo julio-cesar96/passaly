@@ -3,14 +3,25 @@ import type { Db } from '../db/cliente.js';
 import { execucoesDoTique } from '../db/schema.js';
 import type { Relogio } from '../relogio.js';
 import type { Verificador } from '../sms/verificador.js';
+import { criarIdentidade } from './identidade.js';
 
-export type Dependencias = { db: Db; relogio: Relogio; verificador: Verificador };
+export type Dependencias = {
+  db: Db;
+  relogio: Relogio;
+  verificador: Verificador;
+  /** E.164, de configuração local. Sem ele, ninguém é fundador. */
+  telefoneDoFundador?: string | undefined;
+};
 
 export type EstadoDoTique = { ultimaExecucao: Date | null; execucoes: number };
 
 /** Interface de casos de uso do Passaly: o único ponto de teste da spec (#2). A API é um adaptador fino sobre ela. */
-export function criarPassaly({ db, relogio }: Dependencias) {
+export function criarPassaly(dependencias: Dependencias) {
+  const { db, relogio } = dependencias;
+
   return {
+    ...criarIdentidade(dependencias),
+
     /**
      * "O relógio avançou (agora)" (ADR 0011). Idempotente: no mesmo instante, não muda nada.
      * A chave primária só cobre o registro da execução. As varreduras que chegarem (validade,

@@ -8,7 +8,7 @@ const db = usarBancoDeTestes();
 
 function montar() {
   const relogio = new RelogioControlavel(new Date('2026-12-01T10:00:00-03:00'));
-  const passaly = criarPassaly({ db, relogio, verificador: new SmsFalso() });
+  const passaly = criarPassaly({ db, relogio, verificador: new SmsFalso(relogio) });
   return { relogio, passaly };
 }
 

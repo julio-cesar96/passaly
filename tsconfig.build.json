@@ -2,9 +2,15 @@
   "extends": "./tsconfig.json",
   "compilerOptions": {
     "noEmit": false,
-    "outDir": "dist/server",
-    "rootDir": "src/server"
+    "outDir": "dist",
+    "rootDir": "src"
   },
-  "include": ["src/server"],
-  "exclude": ["src/server/**/*.test.ts", "src/server/testes"]
+  "include": ["src/server", "src/compartilhado"],
+  // O SMS falso e a entrada de desenvolvimento não existem em produção.
+  "exclude": [
+    "src/server/**/*.test.ts",
+    "src/server/testes",
+    "src/server/dev",
+    "src/server/sms/sms-falso.ts"
+  ]
 }
