@@ -16,7 +16,7 @@ pnpm dev                 # API (Hono, porta 3000) + SPA (Vite) em http://localho
 
 Para entrar, peça o código na tela e leia-o em http://127.0.0.1:3001: é o SMS falso, só em desenvolvimento. Depois de entrar, a tela provisória mostra o último tique.
 
-Os scripts de desenvolvimento leem o `.env`, se existir. Sem ele, o app usa o Postgres do `docker-compose.yml` e ninguém é fundador.
+Os scripts de desenvolvimento e o `db:migrate` leem o `.env`, se existir. Sem ele, o app usa o Postgres do `docker-compose.yml` e ninguém é fundador.
 
 | Variável | Para quê |
 | --- | --- |

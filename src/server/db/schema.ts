@@ -59,14 +59,17 @@ export const pedidosDeCodigo = pgTable(
   (t) => [index('pedidos_de_codigo_telefone_pedido_em').on(t.telefone, t.pedidoEm)],
 );
 
-/** Janela do código de um telefone e tentativas gastas nela. Some quando o código é aprovado. */
+/** Janela do código de um telefone e tentativas gastas nela. Some quando o código é aprovado; a vencida, na #24. */
 export const verificacoesEmCurso = pgTable('verificacoes_em_curso', {
   telefone: text('telefone').primaryKey(),
   iniciadaEm: instante('iniciada_em').notNull(),
   tentativas: integer('tentativas').notNull(),
 });
 
-/** "Telefone verificado sem conta": não é uma conta e vence logo. Só o hash do token do navegador. */
+/**
+ * "Telefone verificado sem conta": não é uma conta e vence logo. Só o hash do token do navegador.
+ * Some ao criar a conta ou desistir; a vencida, na #24.
+ */
 export const telefonesVerificados = pgTable('telefones_verificados', {
   tokenHash: text('token_hash').primaryKey(),
   telefone: text('telefone').notNull(),

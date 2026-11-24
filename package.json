@@ -13,7 +13,7 @@
     "start:local": "SERVIR_SPA=1 tsx --env-file-if-exists=.env src/server/dev/index.ts",
     "tique": "tsx --env-file-if-exists=.env src/server/dev/tique.ts",
     "db:generate": "drizzle-kit generate",
-    "db:migrate": "tsx src/server/db/migrar.ts",
+    "db:migrate": "tsx --env-file-if-exists=.env src/server/db/migrar.ts",
     "lint": "biome check .",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",

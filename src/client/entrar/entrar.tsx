@@ -1,5 +1,5 @@
 import { useQueryClient, useSuspenseQuery } from '@tanstack/react-query';
-import { useNavigate } from '@tanstack/react-router';
+import { Navigate, useNavigate } from '@tanstack/react-router';
 import { useState } from 'react';
 import { consultaDaSessao, sair } from '../sessao.js';
 import { Cadastro } from './cadastro.js';
@@ -16,6 +16,8 @@ export function Entrar() {
   const [aviso, setAviso] = useState<string | null>(null);
 
   async function atualizarSessao() {
+    // Uma consulta disparada antes traria o estado de antes; fetchQuery se juntaria a ela.
+    await queryClient.cancelQueries(consultaDaSessao);
     const nova = await queryClient.fetchQuery({ ...consultaDaSessao, staleTime: 0, retry: 2 });
     if (nova.estado === 'sessao') await navegar({ to: '/' });
   }
@@ -26,11 +28,14 @@ export function Entrar() {
   }
 
   async function recomecar(motivo: string | null) {
-    await sair();
+    // Só quem escolheu outro celular sai. Recusado, talvez a conta já exista por outra aba.
+    if (motivo === null) await sair();
     setAviso(motivo);
     await atualizarSessao();
   }
 
+  // A sessão também pode ter começado em outra aba.
+  if (sessao.estado === 'sessao') return <Navigate to="/" replace />;
   if (sessao.estado === 'cadastro') {
     return <Cadastro aoCadastrar={atualizarSessao} aoRecomecar={recomecar} />;
   }

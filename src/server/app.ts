@@ -128,6 +128,8 @@ export function criarApi(passaly: Passaly, { producao, lerOrigem }: Opcoes) {
     .delete('/sessao', async (c) => {
       const token = cookies.ler(c, 'sessao');
       if (token) await passaly.sair(token);
+      const cadastro = cookies.ler(c, 'cadastro');
+      if (cadastro) await passaly.desistirDoCadastro(cadastro);
       cookies.apagar(c, 'sessao');
       cookies.apagar(c, 'cadastro');
       return c.body(null, 204);

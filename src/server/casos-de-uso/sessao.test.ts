@@ -1,6 +1,12 @@
 import { describe, expect, it } from 'vitest';
 import { usarBancoDeTestes } from '../testes/banco.js';
-import { montarCenario, ORIGEM, TELEFONE, TELEFONE_DO_FUNDADOR } from '../testes/cenario.js';
+import {
+  codigoErrado,
+  montarCenario,
+  ORIGEM,
+  TELEFONE,
+  TELEFONE_DO_FUNDADOR,
+} from '../testes/cenario.js';
 
 const db = usarBancoDeTestes();
 const DIA = 24;
@@ -101,12 +107,15 @@ describe('login', () => {
   });
 
   it('antes do código conferido, a resposta é igual com e sem conta', async () => {
-    const { cadastrar, pedirCodigo, conferir } = montarCenario(db);
+    const { cadastrar, pedirCodigo, codigoRecebido, conferir } = montarCenario(db);
     await cadastrar(TELEFONE);
     const semConta = '+5521900000003';
 
     expect(await pedirCodigo(TELEFONE)).toEqual(await pedirCodigo(semConta));
-    expect(await conferir('12ab', TELEFONE)).toEqual(await conferir('12ab', semConta));
+    const recusaComConta = await conferir(codigoErrado(codigoRecebido(TELEFONE)), TELEFONE);
+    const recusaSemConta = await conferir(codigoErrado(codigoRecebido(semConta)), semConta);
+    expect(recusaComConta).toEqual({ ok: false, motivo: 'codigo-recusado' });
+    expect(recusaSemConta).toEqual(recusaComConta);
   });
 });
 

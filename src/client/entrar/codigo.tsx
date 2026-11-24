@@ -9,6 +9,7 @@ import { Button } from '../ui/button.js';
 import { Field, FieldDescription, FieldError, FieldLabel } from '../ui/field.js';
 import { CampoDoCodigo } from './campo-do-codigo.js';
 import { pedirCodigo, textoDaRecusa } from './pedir-codigo.js';
+import { telefonePendente } from './telefone-pendente.js';
 
 const CODIGO_RECUSADO = 'Código errado ou vencido. Confira o SMS ou peça outro.';
 
@@ -62,6 +63,7 @@ export function Codigo({
     reenvio.mutate(telefone, {
       onSuccess: (resultado) => {
         if (resultado.ok) {
+          telefonePendente.gravar(telefone);
           setCodigo('');
           setReenviado('Pedido feito. O SMS deve chegar em instantes.');
         } else setErroGeral(textoDaRecusa(resultado));
@@ -99,7 +101,7 @@ export function Codigo({
         <Button variant="ghost" onClick={aoTrocar}>
           Trocar o celular
         </Button>
-        {/* A região existe desde o início; só o texto muda. */}
+        {/* Não é Toast: o texto fica na tela. A região existe desde o início; só o texto muda. */}
         <p role="status">{reenviado}</p>
       </section>
     </Tela>

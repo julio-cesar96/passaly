@@ -1,4 +1,4 @@
-import { and, eq, gt, lt, sql } from 'drizzle-orm';
+import { and, eq, gt, gte, lt, lte, sql } from 'drizzle-orm';
 import { telefoneEmE164 } from '../../compartilhado/telefone.js';
 import { AVISO_DO_SMS } from '../../compartilhado/textos.js';
 import type { Db } from '../db/cliente.js';
@@ -78,32 +78,34 @@ function inicioMaisAntigoValido(agora: Date): Date {
 
 /** Telefone verificado, cadastro e sessão (spec #2, módulo 2; ADR 0010). */
 export function criarIdentidade({ db, relogio, verificador, telefoneDoFundador }: Dependencias) {
-  /** Começa a janela do código ou, se há uma em curso, devolve a que existe. Um comando só, sem corrida. */
-  async function abrirJanela(telefone: string, agora: Date) {
-    const { iniciadaEm, tentativas } = verificacoesEmCurso;
-    const limite = inicioMaisAntigoValido(agora).toISOString();
+  /** Quanto falta para poder pedir de novo, se as tentativas do código em curso acabaram. */
+  async function esperaDoEsgotado(telefone: string, agora: Date): Promise<number> {
     const [janela] = await db
+      .select()
+      .from(verificacoesEmCurso)
+      .where(
+        and(
+          eq(verificacoesEmCurso.telefone, telefone),
+          gt(verificacoesEmCurso.iniciadaEm, inicioMaisAntigoValido(agora)),
+          gte(verificacoesEmCurso.tentativas, MAXIMO_DE_TENTATIVAS),
+        ),
+      );
+    return janela ? janela.iniciadaEm.getTime() + VALIDADE_DO_CODIGO - agora.getTime() : 0;
+  }
+
+  /**
+   * Começa a janela do código ou mantém a que está em curso, num comando só. Chamada depois do envio:
+   * se ele falha, nenhuma janela começa e nenhuma em curso se perde.
+   */
+  async function abrirJanela(telefone: string, agora: Date): Promise<void> {
+    await db
       .insert(verificacoesEmCurso)
       .values({ telefone, iniciadaEm: agora, tentativas: 0 })
       .onConflictDoUpdate({
         target: verificacoesEmCurso.telefone,
-        set: {
-          iniciadaEm: sql`case when ${iniciadaEm} > ${limite}::timestamptz then ${iniciadaEm} else excluded.iniciada_em end`,
-          tentativas: sql`case when ${iniciadaEm} > ${limite}::timestamptz then ${tentativas} else 0 end`,
-        },
-      })
-      .returning();
-    if (!janela) throw new Error('janela do código não gravada');
-    return janela;
-  }
-
-  /** Nenhum código saiu: a janela aberta agora não conta prazo. Uma anterior continua. */
-  async function desfazerJanela(telefone: string, agora: Date) {
-    await db
-      .delete(verificacoesEmCurso)
-      .where(
-        and(eq(verificacoesEmCurso.telefone, telefone), eq(verificacoesEmCurso.iniciadaEm, agora)),
-      );
+        set: { iniciadaEm: agora, tentativas: 0 },
+        setWhere: lte(verificacoesEmCurso.iniciadaEm, inicioMaisAntigoValido(agora)),
+      });
   }
 
   /** Falso se não há código em curso ou se as tentativas acabaram. Incremento atômico. */
@@ -120,6 +122,14 @@ export function criarIdentidade({ db, relogio, verificador, telefoneDoFundador }
       )
       .returning({ tentativas: verificacoesEmCurso.tentativas });
     return gastas.length > 0;
+  }
+
+  /** O fornecedor não conferiu: a tentativa não conta. */
+  async function devolverTentativa(telefone: string): Promise<void> {
+    await db
+      .update(verificacoesEmCurso)
+      .set({ tentativas: sql`greatest(${verificacoesEmCurso.tentativas} - 1, 0)` })
+      .where(eq(verificacoesEmCurso.telefone, telefone));
   }
 
   /** Abre a sessão e grava o acesso juntos: não há sessão sem log de acesso. */
@@ -190,10 +200,9 @@ export function criarIdentidade({ db, relogio, verificador, telefoneDoFundador }
       if (avisoVersao !== AVISO_DO_SMS.versao) return { ok: false, motivo: 'aviso-desatualizado' };
 
       const agora = relogio.agora();
-      const janela = await abrirJanela(telefone, agora);
-      if (janela.tentativas >= MAXIMO_DE_TENTATIVAS) {
-        const resta = janela.iniciadaEm.getTime() + VALIDADE_DO_CODIGO - agora.getTime();
-        return { ok: false, motivo: 'aguarde', minutos: Math.ceil(resta / MINUTO) };
+      const espera = await esperaDoEsgotado(telefone, agora);
+      if (espera > 0) {
+        return { ok: false, motivo: 'aguarde', minutos: Math.ceil(espera / MINUTO) };
       }
 
       // A prova é gravada antes do envio: nenhum SMS sai sem pedido registrado.
@@ -202,9 +211,9 @@ export function criarIdentidade({ db, relogio, verificador, telefoneDoFundador }
         await verificador.enviarCodigo(telefone);
       } catch (erro) {
         log.error('falha ao enviar código', { erro });
-        await desfazerJanela(telefone, agora);
         return { ok: false, motivo: 'envio-falhou' };
       }
+      await abrirJanela(telefone, agora);
       return { ok: true };
     },
 
@@ -225,7 +234,12 @@ export function criarIdentidade({ db, relogio, verificador, telefoneDoFundador }
       if (!formatoValido || !(await gastarTentativa(telefone))) {
         return { ok: false, motivo: 'codigo-recusado' };
       }
-      const conferencia = await verificador.conferirCodigo(telefone, codigo);
+      const conferencia = await verificador
+        .conferirCodigo(telefone, codigo)
+        .catch(async (erro: unknown) => {
+          await devolverTentativa(telefone);
+          throw erro;
+        });
       if (conferencia === 'recusado') return { ok: false, motivo: 'codigo-recusado' };
       await db.delete(verificacoesEmCurso).where(eq(verificacoesEmCurso.telefone, telefone));
 
@@ -315,6 +329,13 @@ export function criarIdentidade({ db, relogio, verificador, telefoneDoFundador }
     },
 
     consultarSessao,
+
+    /** Esquece o telefone verificado deste navegador, que não virou conta. */
+    async desistirDoCadastro(token: string): Promise<void> {
+      await db
+        .delete(telefonesVerificados)
+        .where(eq(telefonesVerificados.tokenHash, hashDoToken(token)));
+    },
 
     /** Revoga a sessão no servidor. */
     async sair(token: string): Promise<void> {

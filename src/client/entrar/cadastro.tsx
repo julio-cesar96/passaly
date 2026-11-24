@@ -83,7 +83,7 @@ export function Cadastro({
           case 'textos-desatualizados':
             return setErroGeral('Os textos mudaram. Recarregue a página para ler a versão nova.');
           case 'telefone-nao-verificado':
-            return recomecar('A confirmação do celular venceu. Peça outro código.');
+            return recomecar('A verificação do celular venceu. Peça outro código.');
           case 'conta-ja-existe':
             return recomecar('Este celular já tem conta. Entre com um código.');
         }
@@ -94,7 +94,7 @@ export function Cadastro({
 
   return (
     <Tela titulo="Criar conta">
-      <p>Celular confirmado. Preencha todos os campos em até 30 minutos para criar a conta.</p>
+      <p>Celular verificado. Preencha todos os campos em até 30 minutos para criar a conta.</p>
       <AvisoDeErro>{erroGeral}</AvisoDeErro>
       <Form errors={erros} onSubmit={enviar} className="flex flex-col gap-6">
         <Field name="apelido">

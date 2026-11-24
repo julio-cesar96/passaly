@@ -130,6 +130,21 @@ describe('telefone verificado', () => {
   });
 });
 
+describe('desistir do cadastro', () => {
+  it('encerra o estado "verificado sem conta"', async () => {
+    const { passaly, verificarSemConta } = montarCenario(db);
+    const token = await verificarSemConta();
+
+    await passaly.desistirDoCadastro(token);
+
+    expect(await passaly.cadastroPendente(token)).toBe(false);
+    expect(await passaly.cadastrar(cadastroValido(token))).toEqual({
+      ok: false,
+      motivo: 'telefone-nao-verificado',
+    });
+  });
+});
+
 describe('campos do cadastro', () => {
   async function recusa(campos: Record<string, unknown>) {
     const { passaly, verificarSemConta } = montarCenario(db);

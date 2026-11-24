@@ -39,7 +39,6 @@ describe('conferir código', () => {
     await pedirCodigo(TELEFONE);
     await pedirCodigo(OUTRO_TELEFONE);
     const doOutro = codigoRecebido(OUTRO_TELEFONE);
-    if (doOutro === codigoRecebido(TELEFONE)) return;
 
     expect(await conferir(doOutro, TELEFONE)).toMatchObject({ ok: false });
   });
@@ -172,6 +171,28 @@ describe('limite de tentativas por código', () => {
     for (let i = 0; i < 6; i++) await cenario.conferir('12ab');
 
     expect(await cenario.conferir()).toMatchObject({ ok: true });
+  });
+});
+
+describe('fornecedor fora do ar', () => {
+  it('reenvio que falha não invalida o código que já chegou', async () => {
+    const { sms, pedirCodigo, conferir } = montarCenario(db);
+    await pedirCodigo();
+    sms.foraDoAr = true;
+    await pedirCodigo();
+    sms.foraDoAr = false;
+
+    expect(await conferir()).toMatchObject({ ok: true });
+  });
+
+  it('conferência que falha não gasta tentativa', async () => {
+    const { sms, pedirCodigo, conferir } = montarCenario(db);
+    await pedirCodigo();
+    sms.foraDoAr = true;
+    for (let i = 0; i < 6; i++) await expect(conferir()).rejects.toThrow();
+    sms.foraDoAr = false;
+
+    expect(await conferir()).toMatchObject({ ok: true });
   });
 });
 

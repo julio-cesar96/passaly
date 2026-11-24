@@ -35,7 +35,7 @@ export function Tela({
   );
 }
 
-/** Erro que não é de um campo. O `alert` faz o leitor de tela falar sem mover o foco. */
+/** Erro que não é de um campo. O `alert` faz o leitor de tela falar sem mover o foco; nenhum primitivo cobre. */
 export function AvisoDeErro({ children }: { children: ReactNode }) {
   return (
     // Vazio, sai do fluxo para não deixar vão, mas continua na árvore de acessibilidade.
@@ -45,4 +45,4 @@ export function AvisoDeErro({ children }: { children: ReactNode }) {
   );
 }
 
-export const SEM_CONEXAO = 'Não deu para falar com o Passaly. Confira a internet e tente de novo.';
+export const SEM_CONEXAO = 'Não deu certo agora. Confira a internet e tente de novo em instantes.';

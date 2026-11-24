@@ -38,6 +38,7 @@ export class SmsFalso implements Verificador {
   }
 
   async conferirCodigo(telefone: string, codigo: string): Promise<'aprovado' | 'recusado'> {
+    if (this.foraDoAr) throw new Error('fornecedor de SMS fora do ar');
     if (this.#pendente(telefone)?.codigo !== codigo) return 'recusado';
     this.#pendentes.delete(telefone);
     return 'aprovado';

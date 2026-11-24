@@ -1,5 +1,5 @@
 import { useMutation, useQuery, useQueryClient, useSuspenseQuery } from '@tanstack/react-query';
-import { useNavigate } from '@tanstack/react-router';
+import { Navigate } from '@tanstack/react-router';
 import { api } from './api.js';
 import { consultaDaSessao, sair } from './sessao.js';
 import { AvisoDeErro, SEM_CONEXAO, Tela } from './tela.js';
@@ -14,7 +14,6 @@ const formatoDataHora = new Intl.DateTimeFormat('pt-BR', {
 /** Provisória: a lista de Posts e a landing vêm em outros tickets. */
 export function Inicio() {
   const queryClient = useQueryClient();
-  const navegar = useNavigate();
   const { data: sessao } = useSuspenseQuery(consultaDaSessao);
   const tique = useQuery({
     queryKey: ['tique'],
@@ -28,12 +27,12 @@ export function Inicio() {
     mutationFn: sair,
     onSuccess: async () => {
       await queryClient.fetchQuery({ ...consultaDaSessao, staleTime: 0 });
-      await navegar({ to: '/entrar' });
       queryClient.removeQueries({ queryKey: ['tique'] });
     },
   });
 
-  if (sessao.estado !== 'sessao') return null;
+  // Sair em outra aba ou sessão revogada.
+  if (sessao.estado !== 'sessao') return <Navigate to="/entrar" replace />;
   const { apelido, bairro, papel } = sessao.conta;
   return (
     <Tela titulo={`Olá, ${apelido}`}>
