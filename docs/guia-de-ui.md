@@ -140,7 +140,7 @@ Fazer à mão só se nenhum servir, com o motivo no PR e o passo correspondente 
 
 - Frase direta, na segunda pessoa ("você"), no vocabulário do [GLOSSARY.md](../GLOSSARY.md): Post, Pedido, Entrega, Ponto de encontro.
 - Botão diz a ação que acontece: "Publicar", "Pedir", "Confirmar entrega". Nada de "Continuar" genérico quando há uma ação concreta.
-- Erro diz o que houve e o que fazer: "Código errado. Confira o SMS ou peça outro."
+- Erro diz o que houve e o que fazer: "Código errado ou vencido. Confira o SMS ou peça outro."
 - Evitar os vícios de texto gerado:
   - contraste forçado ("Não é só X. É Y.");
   - promessa vaga ("a forma mais fácil", "revolucionar", "experiência única");

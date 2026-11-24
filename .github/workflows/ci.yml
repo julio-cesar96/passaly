@@ -46,3 +46,6 @@ jobs:
       - run: pnpm typecheck
       - run: pnpm test
       - run: pnpm build
+      # #7: o SMS falso não existe em produção.
+      - name: Conferir que o SMS falso ficou fora do build
+        run: test -z "$(find dist/server -name 'sms-falso*' -o -path '*/dev/*')"
