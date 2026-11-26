@@ -1,4 +1,5 @@
-# Postgres só para desenvolvimento e testes locais. Credenciais fictícias, nunca usadas fora do Mac.
+# Postgres só para desenvolvimento e testes locais. Credenciais fictícias, nunca usadas fora do Mac:
+# a porta só abre em 127.0.0.1, porque o banco local guarda os telefones dos testes.
 services:
   postgres:
     image: postgres:17
@@ -7,7 +8,7 @@ services:
       POSTGRES_PASSWORD: passaly
       POSTGRES_DB: passaly
     ports:
-      - "5432:5432"
+      - "127.0.0.1:5432:5432"
     volumes:
       - passaly-pg:/var/lib/postgresql/data
       - ./docker/criar-banco-de-testes.sql:/docker-entrypoint-initdb.d/criar-banco-de-testes.sql:ro

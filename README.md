@@ -14,7 +14,14 @@ pnpm tique               # opcional: roda "o relógio avançou" uma vez
 pnpm dev                 # API (Hono, porta 3000) + SPA (Vite) em http://localhost:5173
 ```
 
-A tela inicial mostra a data/hora do último tique. Sem `.env`, o app usa o Postgres do `docker-compose.yml`; para outro banco, copie `.env.example` para `.env` e exporte as variáveis.
+Para entrar, peça o código na tela e leia-o em http://127.0.0.1:3001: é o SMS falso, só em desenvolvimento. Depois de entrar, a tela provisória mostra o último tique.
+
+Os scripts de desenvolvimento e o `db:migrate` leem o `.env`, se existir. Sem ele, o app usa o Postgres do `docker-compose.yml` e ninguém é fundador.
+
+| Variável | Para quê |
+| --- | --- |
+| `DATABASE_URL` | Outro banco |
+| `FUNDADOR_TELEFONE` | Celular da conta com papel de fundador, em E.164. Só no `.env` local, nunca em commit |
 
 ## Comandos
 
@@ -24,11 +31,15 @@ A tela inicial mostra a data/hora do último tique. Sem `.env`, o app usa o Post
 | `pnpm typecheck` | TypeScript estrito |
 | `pnpm lint` | Biome (lint + formatação); `pnpm exec biome check --write .` corrige |
 | `pnpm db:generate` | Gera migração nova em `drizzle/` a partir de `src/server/db/schema.ts` |
-| `pnpm build` / `pnpm start` | Build do SPA e do servidor; `NODE_ENV=production pnpm start` serve os dois |
+| `pnpm build` | Build do SPA e do servidor |
+| `pnpm start:local` | Depois do build, o SPA servido pelo Hono com o CSP e o SMS falso, em http://localhost:3000 |
+| `pnpm start` | Servidor de produção. Não sobe até a Twilio Verify (#26): o SMS falso não existe no build |
 
 ## Estrutura
 
 - `src/server/` — Hono em Node. `casos-de-uso/` é a interface de casos de uso, o único ponto de teste (spec #2); a API em `app.ts` é um adaptador fino sobre ela.
+- `src/server/dev/` — entrada de desenvolvimento e caixa do SMS falso. Fora do build de produção.
+- `src/compartilhado/` — código puro usado pela tela e pelo servidor: bairros, textos com versão e telefone. Sem segredo e sem banco.
 - `src/client/` — SPA em Vite + React + TanStack Router/Query, falando com a API pelo cliente tipado `hc`. Só pode importar **tipos** do servidor: o build quebra se importar código de `src/server/` ou pacotes de banco.
 - `src/server/testes/` — dublês de borda: relógio controlável; o SMS falso fica em `src/server/sms/`.
 - `drizzle/` — migrações versionadas.

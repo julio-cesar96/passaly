@@ -6,6 +6,8 @@
  * - Não passe telefone, código de SMS ou corpo de requisição para o logger. Logue ids internos.
  * - Como rede de segurança, campos com nome de telefone/código são trocados por "[removido]" e
  *   qualquer sequência que pareça número de telefone vira "[telefone removido]".
+ * - De um erro vão nome, mensagem e código: o Drizzle põe os parâmetros da consulta (telefone, token,
+ *   apelido) na mensagem, e eles são cortados. Seis dígitos soltos viram "[código removido]".
  * - Log de requisição registra só método, caminho (sem query string) e status.
  */
 
@@ -26,9 +28,24 @@ function semTelefone(texto: string): string {
   );
 }
 
+const CODIGO_DE_SMS = /(?<!\d)\d{6}(?!\d)/g;
+
+function limparErro(erro: Error, profundidade: number): Campos {
+  const [mensagem = ''] = erro.message.split('\nparams:');
+  const codigo = (erro as { code?: unknown }).code;
+  return {
+    nome: erro.name,
+    mensagem: semTelefone(mensagem).replace(CODIGO_DE_SMS, '[código removido]'),
+    ...(typeof codigo === 'string' ? { codigoDoErro: codigo } : {}),
+    ...(erro.cause instanceof Error && profundidade < 4
+      ? { causa: limparErro(erro.cause, profundidade + 1) }
+      : {}),
+  };
+}
+
 function limpar(valor: unknown, profundidade = 0): unknown {
   if (typeof valor === 'string') return semTelefone(valor);
-  if (valor instanceof Error) return { nome: valor.name, mensagem: limpar(valor.message) };
+  if (valor instanceof Error) return limparErro(valor, profundidade);
   if (profundidade > 4 || valor === null || typeof valor !== 'object') return valor;
   if (Array.isArray(valor)) return valor.map((v) => limpar(v, profundidade + 1));
   return Object.fromEntries(

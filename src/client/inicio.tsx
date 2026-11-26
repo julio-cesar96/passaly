@@ -1,5 +1,9 @@
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient, useSuspenseQuery } from '@tanstack/react-query';
+import { Navigate } from '@tanstack/react-router';
 import { api } from './api.js';
+import { consultaDaSessao, sair } from './sessao.js';
+import { AvisoDeErro, SEM_CONEXAO, Tela } from './tela.js';
+import { Button } from './ui/button.js';
 
 const formatoDataHora = new Intl.DateTimeFormat('pt-BR', {
   dateStyle: 'short',
@@ -7,7 +11,10 @@ const formatoDataHora = new Intl.DateTimeFormat('pt-BR', {
   timeZone: 'America/Sao_Paulo',
 });
 
+/** Provisória: a lista de Posts e a landing vêm em outros tickets. */
 export function Inicio() {
+  const queryClient = useQueryClient();
+  const { data: sessao } = useSuspenseQuery(consultaDaSessao);
   const tique = useQuery({
     queryKey: ['tique'],
     queryFn: async () => {
@@ -16,10 +23,22 @@ export function Inicio() {
       return resposta.json();
     },
   });
+  const saida = useMutation({
+    mutationFn: sair,
+    onSuccess: async () => {
+      await queryClient.fetchQuery({ ...consultaDaSessao, staleTime: 0 });
+      queryClient.removeQueries({ queryKey: ['tique'] });
+    },
+  });
 
+  // Sair em outra aba ou sessão revogada.
+  if (sessao.estado !== 'sessao') return <Navigate to="/entrar" replace />;
+  const { apelido, bairro, papel } = sessao.conta;
   return (
-    <main className="p-4">
-      <h1 className="text-2xl font-semibold">Passaly</h1>
+    <Tela titulo={`Olá, ${apelido}`}>
+      <p>
+        Você entrou. Bairro: {bairro}.{papel === 'fundador' && ' Conta do fundador.'}
+      </p>
       <p>
         Último tique:{' '}
         {tique.isPending
@@ -30,6 +49,15 @@ export function Inicio() {
               ? formatoDataHora.format(new Date(tique.data.ultimaExecucao))
               : 'ainda não rodou'}
       </p>
-    </main>
+      <AvisoDeErro>{saida.isError && SEM_CONEXAO}</AvisoDeErro>
+      <Button
+        variant="outline"
+        onClick={() => saida.mutate()}
+        disabled={saida.isPending}
+        focusableWhenDisabled
+      >
+        Sair
+      </Button>
+    </Tela>
   );
 }
